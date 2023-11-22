@@ -46,7 +46,7 @@ dependencies {
 // 소스 파일이 어떤 자바 버전으로 되어 있는지 Gradle에게 알려줌
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -64,21 +64,21 @@ tasks.named('test') {
     useJUnitPlatform() // 단위 테스트를 수행할 때 Junit 도구 사용하라고 지정.
 }
 
-// 자바 소스를 컴파일 할 때 적용할 옵션
+// 자바 소스를 컴파일 할 때 적용할 옵션 (gradle로 컴파일 할 때)
 tasks.withType(JavaCompile) configureEach {
     // 프로젝트의 소스 파일 인코딩을 gradle에게 알려준다.
     // $javac -encoding UTF-8 ..
     options.encoding = 'UTF-8' 
 }
 
-// eclipse 프로젝트 이름을 설정하기
+// eclipse 프로젝트 이름을 설정하기 (eclipse로 컴파일 할 때)
 eclipse {
     project {
         name = "java-basic"
     }
     jdt {
-      sourceCompatibility = 21
-      targetCompatibility = 21
-      javaRuntimeName = "JavaSE-21"
+      sourceCompatibility = 17
+      targetCompatibility = 17
+      javaRuntimeName = "JavaSE-17"
     }
 }
