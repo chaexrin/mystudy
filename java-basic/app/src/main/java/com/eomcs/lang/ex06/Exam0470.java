@@ -6,7 +6,7 @@ import java.util.ArrayList;
 //
 public class Exam0470 {
   public static void main(String[] args) {
-    // 제네릭 적용
+    // 제네릭 적용(type parameter)
     ArrayList<String> list = new ArrayList<>();
     list.add("홍길동");
     list.add("임꺽정");

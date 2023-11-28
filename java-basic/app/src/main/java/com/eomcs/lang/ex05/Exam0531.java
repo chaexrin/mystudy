@@ -1,6 +1,6 @@
 package com.eomcs.lang.ex05;
 
-//# 조건 연산자 => ? :
+// # 조건 연산자 => ? :
 //
 public class Exam0531 {
   public static void main(String[] args) {
