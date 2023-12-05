@@ -1,4 +1,4 @@
-package com.eomcs.oop.ex02.step13;
+package com.eomcs.oop.ex02.step14;
 
 // 사용자 정의 데이터 타입 만들기
 // - 학생의 성적 데이터를 담을 전용 메모리(변수)를 설계한다.

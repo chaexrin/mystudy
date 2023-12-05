@@ -1,6 +1,6 @@
-package com.eomcs.oop.ex02;
+package com.eomcs.oop.ex02.test;
 
-class Score {
+public class Score {
 
   String name;
   int kor;
@@ -11,6 +11,7 @@ class Score {
 
   void compute() {
     this.sum = this.kor + this.eng + this.math;
-    this.aver = (float) this.sum / 3;
+    this.aver = this.sum / 3f;
   }
+
 }
