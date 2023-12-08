@@ -16,7 +16,7 @@ public class Exam0610 {
     // 클래스 로딩,
     // 1) 스태틱 필드를 만든다(Method Area)
     // 2) 스태틱 블록을 실행한다.
-    // 
+    //
     // 컴파일할 때
     // - 여러 개의 스태틱 블록이 있으면 컴파일러는 한 개의 블록으로 합친다.
     // - 스태틱 블록의 위치에 상관없이 작성된 순서대로 한 개의 static 블록으로 합친다.
@@ -39,6 +39,8 @@ public class Exam0610 {
     // - 그래서 스태틱 초기화 블록(static initializer)이 실행되지 않는다.
     A obj1;
     A obj2;
+
+    // A.a = 2;
 
     System.out.println("종료!");
   }

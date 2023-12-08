@@ -27,7 +27,7 @@ public class Exam0851 {
 
     // 인스턴스 초기화 블록(initializer block)
     {
-      a = 111;
+      this.a = 111;
       System.out.println("초기화 블록 실행");
     }
   }

@@ -17,6 +17,7 @@ public class Exam0100 {
   // - Garbage Collector에 의해 인스턴스가 해제될 때 제거된다.
   int b;
 
+
   public static void main(String[] args /* 파라미터 = 로컬 변수 */) {
 
     // 로컬 변수
@@ -30,9 +31,10 @@ public class Exam0100 {
     // - JVM Stack: args, c, obj 변수 존재
     // - Heap: 아직 생성된 객체 없음
 
-    Exam0100 obj; // obj는 main()을 호출할 때 시작 시점에 JVM Stack에 생성된 상태이다.
+    // Exam0100 obj; // obj는 main()을 호출할 때 시작 시점에 JVM Stack에 생성된 상태이다.
 
-    obj = new Exam0100();
+    Exam0100 obj = new Exam0100();
+
 
     // <=== 현재 실행 시점
     // - Method Area: a 변수 존재
@@ -43,6 +45,5 @@ public class Exam0100 {
 
   }
 }
-
 
 
