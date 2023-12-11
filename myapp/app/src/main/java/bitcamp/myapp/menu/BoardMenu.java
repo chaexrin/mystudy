@@ -1,9 +1,10 @@
 package bitcamp.myapp.menu;
 
+import bitcamp.menu.Menu;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.Prompt;
 
-public class BoardMenu {
+public class BoardMenu implements Menu {
 
   Prompt prompt;
   String title;
@@ -17,7 +18,7 @@ public class BoardMenu {
 
 
   void printMenu() {
-    System.out.println("[게시글]");
+    System.out.printf("[%s]\n", this.title);
     System.out.println("1. 등록");
     System.out.println("2. 조회");
     System.out.println("3. 변경");
@@ -26,7 +27,7 @@ public class BoardMenu {
     System.out.println("0. 이전");
   }
 
-  void execute() {
+  public void execute(Prompt prompt) {
     this.printMenu();
     while (true) {
       String input = this.prompt.input("메인/게시글> ");
@@ -56,6 +57,11 @@ public class BoardMenu {
           System.out.println("메뉴 번호가 옳지 않습니다!");
       }
     }
+  }
+
+  @Override
+  public String getTitle() {
+    return null;
   }
 
   void add() {

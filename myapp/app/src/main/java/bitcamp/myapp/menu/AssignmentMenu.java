@@ -1,9 +1,10 @@
 package bitcamp.myapp.menu;
 
+import bitcamp.menu.Menu;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.Prompt;
 
-public class AssignmentMenu {
+public class AssignmentMenu implements Menu {
 
   Prompt prompt;
   String title;
@@ -15,7 +16,7 @@ public class AssignmentMenu {
     this.prompt = prompt;
   }
 
-  public void printMenu() {
+  void printMenu() {
     System.out.printf("[%s]\n", this.title);
     System.out.println("1. 등록");
     System.out.println("2. 조회");
@@ -25,7 +26,7 @@ public class AssignmentMenu {
     System.out.println("0. 이전");
   }
 
-  public void execute() {
+  public void execute(Prompt prompt) {
     this.printMenu();
 
     while (true) {
@@ -56,6 +57,11 @@ public class AssignmentMenu {
           System.out.println("메뉴 번호가 옳지 않습니다!");
       }
     }
+  }
+
+  @Override
+  public String getTitle() {
+    return null;
   }
 
   public void modify() {
@@ -117,6 +123,13 @@ public class AssignmentMenu {
   public void add() {
     System.out.println("과제 등록:");
 
+    Assignment assignment = new Assignment();
+    assignment.title = this.prompt.input("과제명? ");
+    assignment.content = this.prompt.input("내용? ");
+    assignment.deadline = this.prompt.input("제출 마감일? ");
+
+    this.assignments[this.length] = assignment;
+    this.length++;
     if (this.length == this.assignments.length) {
       //System.out.println("과제를 더이상 등록할 수 없습니다.");
       int oldSize = this.assignments.length;
@@ -132,13 +145,7 @@ public class AssignmentMenu {
       this.assignments = arr;
     }
 
-    Assignment assignment = new Assignment();
-    assignment.title = this.prompt.input("과제명? ");
-    assignment.content = this.prompt.input("내용? ");
-    assignment.deadline = this.prompt.input("제출 마감일? ");
 
-    this.assignments[this.length] = assignment;
-    this.length++;
   }
 
 

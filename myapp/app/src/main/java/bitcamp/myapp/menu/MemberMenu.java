@@ -1,9 +1,10 @@
 package bitcamp.myapp.menu;
 
+import bitcamp.menu.Menu;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
 
-public class MemberMenu {
+public class MemberMenu implements Menu {
 
   Prompt prompt;
   String title;
@@ -16,8 +17,8 @@ public class MemberMenu {
   }
 
 
-  public void printMenu() {
-    System.out.println("[회원]");
+  void printMenu() {
+    System.out.printf("[%s]\n", this.title);
     System.out.println("1. 등록");
     System.out.println("2. 조회");
     System.out.println("3. 변경");
@@ -26,7 +27,7 @@ public class MemberMenu {
     System.out.println("0. 이전");
   }
 
-  public void execute() {
+  public void execute(Prompt prompt) {
     this.printMenu();
 
     while (true) {
@@ -55,6 +56,11 @@ public class MemberMenu {
           return;
       }
     }
+  }
+
+  @Override
+  public String getTitle() {
+    return null;
   }
 
   void view() {
