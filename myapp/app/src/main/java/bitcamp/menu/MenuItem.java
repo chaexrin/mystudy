@@ -16,7 +16,6 @@ public class MenuItem implements Menu {
   }
 
   public MenuItem(String title, MenuHandler menuHandler) {
-
     this(title);
     this.menuHandler = menuHandler;
   }
@@ -24,7 +23,7 @@ public class MenuItem implements Menu {
   @Override
   public void execute(Prompt prompt) {
     if (this.menuHandler != null) {
-      this.menuHandler.action();
+      this.menuHandler.action(this);
     }
   }
 
