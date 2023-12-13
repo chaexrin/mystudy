@@ -8,11 +8,12 @@ import bitcamp.util.ObjectRepository;
 import bitcamp.util.Prompt;
 
 // 게시글의 '등록' 메뉴를 선택했을 때 작업을 수행하는 클래스
-// - 반드시 MenuHandler 규칙에 따라 클래스를 작성해야한다.
+// - 반드시 MenuHandler 규칙에 따라 클래스를 작성해야 한다.
+//
 public class BoardModifyHandler implements MenuHandler {
 
-  Prompt prompt;
   ObjectRepository objectRepository;
+  Prompt prompt;
 
   public BoardModifyHandler(ObjectRepository objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
@@ -38,4 +39,5 @@ public class BoardModifyHandler implements MenuHandler {
 
     this.objectRepository.set(index, board);
   }
+
 }

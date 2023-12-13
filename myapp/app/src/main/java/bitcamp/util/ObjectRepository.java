@@ -1,11 +1,12 @@
 package bitcamp.util;
 
-public class ObjectRepository {
 
+// 게시글 데이터를 보관하는 일을 한다.
+//
+public class ObjectRepository {
 
   private Object[] objects = new Object[3];
   private int length = 0;
-
 
   public void add(Object object) {
 
@@ -17,7 +18,6 @@ public class ObjectRepository {
       for (int i = 0; i < oldSize; i++) {
         arr[i] = this.objects[i];
       }
-
       this.objects = arr;
     }
 
@@ -27,7 +27,6 @@ public class ObjectRepository {
   public Object remove(int index) {
 
     if (index < 0 || index >= this.length) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
       return null;
     }
 
@@ -36,7 +35,9 @@ public class ObjectRepository {
     for (int i = index; i < (this.length - 1); i++) {
       this.objects[i] = this.objects[i + 1];
     }
+
     this.objects[--this.length] = null;
+
     return deleted;
   }
 
@@ -49,8 +50,8 @@ public class ObjectRepository {
   }
 
   public Object get(int index) {
+
     if (index < 0 || index >= this.length) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
       return null;
     }
     return this.objects[index];
@@ -60,7 +61,7 @@ public class ObjectRepository {
     if (index < 0 || index >= this.length) {
       return null;
     }
-    Object old = this.objects[index];
+    Object old = objects[index];
     this.objects[index] = object;
     return old;
   }
