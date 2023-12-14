@@ -1,10 +1,10 @@
-// 인스턴스 메서드와 클래스 메서드의 활용 - wrapper 클래스 
+// 인스턴스 메서드와 클래스 메서드의 활용 - wrapper 클래스
 package com.eomcs.oop.ex04;
 
 public class Exam0220 {
   public static void main(String[] args) throws Exception {
     // 다음과 같이 생성자를 통해 Integer 객체를 생성할 수 있지만,
-    // 이 생성자는 사용하지 말라고 권고한 것이기 때문에 
+    // 이 생성자는 사용하지 말라고 권고한 것이기 때문에
     // 가능한 개발 중에 사용하지 말라!
     Integer obj1 = new Integer(100);
     Integer obj2 = new Integer(200);
@@ -19,7 +19,7 @@ public class Exam0220 {
     System.out.println(i2.compareTo(i1));
     System.out.println(i2.compareTo(i3));
 
-    int v1 = i2.intValue(); // Integer 객체에서 int 값을 뽑아 낼 때 
+    int v1 = i2.intValue(); // Integer 객체에서 int 값을 뽑아 낼 때
     System.out.println(v1);
 
     // 스태틱 메서드 = 클래스 메서드 사용
@@ -37,12 +37,9 @@ public class Exam0220 {
     boolean b = Boolean.parseBoolean("true");
     System.out.printf("%f, %b\n", f, b);
 
-    float f2 = Float.valueOf("3.14f");
+    float f2 = Float.valueOf("3.14f"); // valueOf가 리턴하는것은 float 인스턴스 주소...
     System.out.printf("%f\n", f2);
   }
 }
-
-
-
 
 

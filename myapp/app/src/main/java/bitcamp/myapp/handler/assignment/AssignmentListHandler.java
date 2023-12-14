@@ -8,10 +8,10 @@ import bitcamp.util.ObjectRepository;
 
 public class AssignmentListHandler implements MenuHandler {
 
-  ObjectRepository objectRepository;
+  ObjectRepository<Assignment> objectRepository;
 
 
-  public AssignmentListHandler(ObjectRepository objectRepository) {
+  public AssignmentListHandler(ObjectRepository<Assignment> objectRepository) {
     this.objectRepository = objectRepository;
   }
 

@@ -2,6 +2,7 @@ package bitcamp.myapp.handler.assignment;
 
 import bitcamp.menu.Menu;
 import bitcamp.menu.MenuHandler;
+import bitcamp.myapp.vo.Assignment;
 import bitcamp.util.AnsiEscape;
 import bitcamp.util.ObjectRepository;
 import bitcamp.util.Prompt;
@@ -9,10 +10,10 @@ import bitcamp.util.Prompt;
 public class AssignmentDeleteHandler implements MenuHandler {
 
   Prompt prompt;
-  ObjectRepository objectRepository;
+  ObjectRepository<Assignment> objectRepository;
 
 
-  public AssignmentDeleteHandler(ObjectRepository objectRepository, Prompt prompt) {
+  public AssignmentDeleteHandler(ObjectRepository<Assignment> objectRepository, Prompt prompt) {
     this.objectRepository = objectRepository;
     this.prompt = prompt;
   }
