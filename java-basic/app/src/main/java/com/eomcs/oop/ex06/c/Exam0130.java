@@ -8,6 +8,7 @@ public class Exam0130 {
     String tel;
     boolean working;
 
+
     void print() {
       System.out.println("A.print():");
       System.out.printf("  => this.name(%s)\n", this.name);
@@ -38,7 +39,7 @@ public class Exam0130 {
     A4 obj = new A4();
     obj.name = "홍길동"; // A의 name
     obj.tel = "1111-1111"; // A의 tel
-    //    obj.working = true; // A4의 working : obj의 클래스에서 먼저 필드를 찾기 때문이다.
+    // obj.working = true; // A4의 working : obj의 클래스에서 먼저 필드를 찾기 때문이다.
     obj.working = "취업";
 
     obj.print();

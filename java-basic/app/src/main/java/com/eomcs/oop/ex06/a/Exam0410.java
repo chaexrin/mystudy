@@ -13,26 +13,24 @@ public class Exam0410 {
 
   public static void main(String[] args) throws Exception {
 
-    Sedan sedan = new Sedan();
-    sedan.model = "티코";
-    sedan.cc = 800;
+    Sedan s1 = new Sedan();
+    s1.model = "티코";
+    s1.cc = 800;
 
     Truck truck = new Truck();
     truck.model = "타이탄II";
     truck.cc = 10000;
 
-    printSedan(sedan);
+    printSedan(s1);
 
     // printSedan()의 파라미터는 Sedan 객체의 주소만 받을 수 있다.
     // 그래서 Truck 객체를 전달할 수 없다.
-    //    printSedan(truck); // 컴파일 오류!
+    // printSedan(truck); // 컴파일 오류!
 
     // Truck 인스턴스에서 model과 cc 값을 꺼내서 출력할 메서드를
     // 따로 만들어야 한다.
   }
 
 }
-
-
 
 
