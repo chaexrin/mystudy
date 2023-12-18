@@ -1,4 +1,4 @@
-// 정렬 객체를 일관성 있게 사용하려면 같은 타입으로 묶어야 한다. 
+// 정렬 객체를 일관성 있게 사용하려면 같은 타입으로 묶어야 한다.
 // 상속의 generalization 기법 이용!
 package com.eomcs.oop.ex07.c;
 
@@ -15,6 +15,7 @@ public class Exam01 {
     // => 즉 메서드가 같으니 사용법도 같다.
     //
 
+
     // 두 개의 정렬 객체가 같은 타입이기 때문에 사용하기 편하다.
     // => 언제든 다른 객체로 교체할 수 있어 유연하다.
     display(new BubbleSort(), values);
@@ -29,15 +30,11 @@ public class Exam01 {
     sorter.sort(values);
 
     // 정렬된 값을 출력한다.
-    for (int  value : values) {
+    for (int value : values) {
       System.out.print(value + ",");
     }
     System.out.println();
   }
 }
-
-
-
-
 
 
