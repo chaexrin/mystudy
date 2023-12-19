@@ -65,10 +65,11 @@ class Patient3 {
 
   @Override
   public String toString() {
-    return String.format("name=%s, age=%d, height=%d, weight=%d, gender=%d",
-        this.name, this.age, this.height, this.weight, this.gender);
+    return String.format("name=%s, age=%d, height=%d, weight=%d, gender=%d", this.name, this.age,
+        this.height, this.weight, this.gender);
   }
 }
+
 
 public class Exam0130 {
 
@@ -96,8 +97,5 @@ public class Exam0130 {
   }
 
 }
-
-
-
 
 

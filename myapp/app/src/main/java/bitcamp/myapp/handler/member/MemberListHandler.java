@@ -1,28 +1,30 @@
 package bitcamp.myapp.handler.member;
 
-import bitcamp.menu.Menu;
-import bitcamp.menu.MenuHandler;
+import bitcamp.menu.AbstractMenuHandler;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.AnsiEscape;
-import bitcamp.util.ObjectRepository;
+import bitcamp.util.Prompt;
+import java.util.ArrayList;
 
-public class MemberListHandler implements MenuHandler {
+public class MemberListHandler extends AbstractMenuHandler {
 
-  ObjectRepository objectRepository;
+  private ArrayList<Member> objectRepository;
 
-  public MemberListHandler(ObjectRepository objectRepository) {
+  public MemberListHandler(ArrayList<Member> objectRepository, Prompt prompt) {
+    super(prompt);
     this.objectRepository = objectRepository;
   }
 
   @Override
-  public void action(Menu menu) {
-    System.out.printf(AnsiEscape.ANSI_BOLD + "[%s]\n" + AnsiEscape.ANSI_CLEAR, menu.getTitle());
+  protected void action() {
 
     System.out.printf("%-10s\t%30s\t%s\n", "이름", "이메일", "가입일");
 
-    for (Object object : this.objectRepository.toArray()) {
-      Member member = (Member) object;
-      System.out.printf("%-10s\t%30s\t%s\n", member.name, member.email, member.createdDate);
+    Member[] members = new Member[this.objectRepository.size()];
+    this.objectRepository.toArray(members);
+
+    for (Member member : members) {
+      System.out.printf("%-10s\t%30s\t%s\n", member.getName(), member.getEmail(),
+          member.getCreatedDate());
     }
   }
 }
