@@ -49,17 +49,14 @@ public class Exam0131 {
       if (getClass() != obj.getClass())
         return false;
       My other = (My) obj;
-      return age == other.age && Objects.equals(email, other.email) && gender == other.gender
+      return this.age == other.age && Objects.equals(email, other.email) && gender == other.gender
           && Objects.equals(name, other.name) && Objects.equals(tel, other.tel)
           && working == other.working;
     }
+
+
   }
 
 }
-
-
-
-
-
 
 
