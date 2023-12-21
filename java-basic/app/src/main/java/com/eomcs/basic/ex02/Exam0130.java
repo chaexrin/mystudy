@@ -45,6 +45,7 @@ public class Exam0130 {
 
     // String 클래스는 toString()도 오버라이딩 했다.
     System.out.println(s1.toString());
+    // System.out.println(s1);
   }
 }
 
