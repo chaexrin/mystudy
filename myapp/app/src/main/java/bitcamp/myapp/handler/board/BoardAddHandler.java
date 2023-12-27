@@ -20,7 +20,8 @@ public class BoardAddHandler extends AbstractMenuHandler {
 
   @Override
   protected void action() {
-
+    // MenuHandler 인터페이스에 선언된 메서드 대신
+    // AbstractMenuHandler 클래스에 추가된 action() 추상 메서드를 구현한다.
     Board board = new Board();
     board.setTitle(this.prompt.input("제목? "));
     board.setContent(this.prompt.input("내용? "));

@@ -13,12 +13,10 @@ public class AssignmentAddHandler extends AbstractMenuHandler {
   public AssignmentAddHandler(ArrayList<Assignment> objectRepository, Prompt prompt) {
     super(prompt);
     this.objectRepository = objectRepository;
-
   }
 
   @Override
   protected void action() {
-
     try {
       Assignment assignment = new Assignment();
       assignment.setTitle(this.prompt.input("과제명? "));
@@ -31,7 +29,5 @@ public class AssignmentAddHandler extends AbstractMenuHandler {
       System.out.println("과제 입력 중 오류 발생!");
       System.out.println("다시 시도하시기 바랍니다.");
     }
-
-
   }
 }

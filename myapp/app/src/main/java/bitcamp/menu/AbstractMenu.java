@@ -16,5 +16,4 @@ public abstract class AbstractMenu implements Menu {
   public void setTitle(String title) {
     this.title = title;
   }
-
 }

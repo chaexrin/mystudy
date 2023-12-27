@@ -16,9 +16,7 @@ public class BoardDeleteHandler extends AbstractMenuHandler {
 
   @Override
   protected void action() {
-
     int index = this.prompt.inputInt("번호? ");
     this.objectRepository.remove(index);
-    
   }
 }

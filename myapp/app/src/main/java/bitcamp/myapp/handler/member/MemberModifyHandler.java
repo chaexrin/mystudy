@@ -16,10 +16,8 @@ public class MemberModifyHandler extends AbstractMenuHandler {
 
   @Override
   protected void action() {
-
     int index = this.prompt.inputInt("번호? ");
     Member old = this.objectRepository.get(index);
-
     Member member = new Member();
     member.setEmail(this.prompt.input("이메일(%s)? ", old.getEmail()));
     member.setName(this.prompt.input("이름(%s)? ", old.getName()));

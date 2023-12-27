@@ -12,7 +12,6 @@ public class BoardViewHandler extends AbstractMenuHandler {
 
   private ArrayList<Board> objectRepository;
 
-
   public BoardViewHandler(ArrayList<Board> objectRepository, Prompt prompt) {
     super(prompt);
     this.objectRepository = objectRepository;
@@ -20,14 +19,11 @@ public class BoardViewHandler extends AbstractMenuHandler {
 
   @Override
   protected void action() {
-
     int index = this.prompt.inputInt("번호? ");
     Board board = this.objectRepository.get(index);
-
     System.out.printf("제목: %s\n", board.getTitle());
     System.out.printf("내용: %s\n", board.getContent());
     System.out.printf("작성자: %s\n", board.getWriter());
-    System.out.printf("작성일: %1$tY%1$tm%1$td %1$tH:%1$tM:%1$tS\n",
-        board.getCreatedDate());
+    System.out.printf("작성일: %1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS\n", board.getCreatedDate());
   }
 }

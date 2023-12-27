@@ -11,7 +11,6 @@ public class HelpHandler extends AbstractMenuHandler {
 
   @Override
   protected void action() {
-
     System.out.println("도움말입니다.");
   }
 }
