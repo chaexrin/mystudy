@@ -1,14 +1,13 @@
 package bitcamp.util;
 
-public class LinkedList<E> {
+import java.util.Arrays;
 
-  private int size;
+public class LinkedList<E> extends AbstractList<E> {
+
+
   private Node<E> first;
   private Node<E> last;
 
-  public int size() {
-    return size;
-  }
 
   public void add(E value) {
     Node<E> node = new Node<>();
@@ -93,14 +92,13 @@ public class LinkedList<E> {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException("무효한 인덱스 입니다");
     }
-
-    E old = null;
+    Node<E> deleted = null;
 
     if (size == 1) {
-      old = first.value;
+      deleted = first; // 삭제할 노드 보관
       first = last = null;
     } else if (index == 0) {
-      old = first.value;
+      deleted = first;
       first = first.next;
     } else {
       int cursor = 0;
@@ -108,7 +106,7 @@ public class LinkedList<E> {
       while (++cursor < index) {
         currNode = currNode.next;
       }
-      old = currNode.next.value;
+      deleted = currNode.next; // 삭제할 노드 보관
       currNode.next = currNode.next.next;
 
       if (index == (size - 1)) {
@@ -117,6 +115,9 @@ public class LinkedList<E> {
     }
 
     size--;
+    E old = deleted.value;
+    deleted.value = null; // 가비지가 되기 전에 다른 객체의 참조하던 것을 제거 한다.
+    deleted.next = null;
     return old;
   }
 
@@ -148,6 +149,23 @@ public class LinkedList<E> {
     return true;
   }
 
+  public E[] toArray(E[] arr) {
+    E[] values = arr;
+    if (values.length < size) {
+      // 새 배열을 생성.
+      values = Arrays.copyOf(arr, size);
+    }
+
+    int i = 0;
+    Node<E> node = first;
+
+    while (node != null) {
+      values[i++] = node.value;
+      node = node.next;
+    }
+
+    return values;
+  }
 
   private static class Node<E> {
 
