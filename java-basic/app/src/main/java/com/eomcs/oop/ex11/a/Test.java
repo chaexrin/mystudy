@@ -16,5 +16,7 @@ public class Test {
     Exam0210.A obj2;
 
     B obj3; // com.eomcs.oop.ex11.a.Exam0210.B 스태틱 중첩 클래스
+
+
   }
 }

@@ -19,5 +19,7 @@ public interface List<E> {
 
   int size();
 
+  Iterator<E> iterator();
+
 
 }
