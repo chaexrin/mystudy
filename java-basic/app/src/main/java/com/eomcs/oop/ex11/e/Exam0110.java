@@ -9,9 +9,11 @@ public class Exam0110 {
     void print();
   }
 
-  class X {}
+  class X {
+  }
 
-  static class Y {}
+  static class Y {
+  }
 
   public static void main(final String[] args) {
 
@@ -27,5 +29,11 @@ public class Exam0110 {
 
     A obj = new My();
     obj.print();
+
+    // 2) non-static 중첩 클래스 사용
+    // class X obj = new X(); // 컴파일 오류!
+
+    // 3) static 중첩 클래스 사용
+    Y obj2 = new Y();
   }
 }
