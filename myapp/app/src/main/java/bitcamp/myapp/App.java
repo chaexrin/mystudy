@@ -1,7 +1,5 @@
 package bitcamp.myapp;
 
-import bitcamp.io.DataInputStream;
-import bitcamp.io.DataOutputStream;
 import bitcamp.menu.MenuGroup;
 import bitcamp.myapp.handler.HelpHandler;
 import bitcamp.myapp.handler.assignment.AssignmentAddHandler;
@@ -23,9 +21,12 @@ import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,18 +105,21 @@ public class App {
   }
 
   void loadAssignment() {
-    try (DataInputStream in = new DataInputStream("assignment.data")) {
-
-      int size = in.readShort();
+    try (DataInputStream in = new DataInputStream(
+        (new BufferedInputStream(new FileInputStream("assignment.data"))))) {
+      long start = System.currentTimeMillis();
+      int size = in.readInt();
 
       for (int i = 0; i < size; i++) {
-
         Assignment assignment = new Assignment();
         assignment.setTitle(in.readUTF());
         assignment.setContent(in.readUTF());
         assignment.setDeadline(java.sql.Date.valueOf(in.readUTF()));
         assignmentRepository.add(assignment);
       }
+      long end = System.currentTimeMillis();
+      System.out.printf("걸린 시간: %d\n", end - start);
+
     } catch (Exception e) {
       System.out.println("과제 데이터 로딩 중 오류 발생!");
       e.printStackTrace();
@@ -123,16 +127,20 @@ public class App {
   }
 
   void saveAssignment() {
-    try (DataOutputStream out = new DataOutputStream("assignment.data")) {
-
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("assignment.data")))) {
+      long start = System.currentTimeMillis();
       // 저장할 데이터 개수를 2바이트로 출력한다.
-      out.writeShort(assignmentRepository.size());
+      out.writeInt(assignmentRepository.size());
 
       for (Assignment assignment : assignmentRepository) {
         out.writeUTF(assignment.getTitle());
         out.writeUTF(assignment.getContent());
         out.writeUTF(assignment.getDeadline().toString());
       }
+
+      long end = System.currentTimeMillis();
+      System.out.printf("걸린 시간: %d\n", end - start);
 
     } catch (Exception e) {
       System.out.println("과제 데이터 저장 중 오류 발생!");
@@ -141,35 +149,17 @@ public class App {
   }
 
   void loadMember() {
-    try (FileInputStream in = new FileInputStream("member.data")) {
-      byte[] bytes = new byte[60000];
-      int size = in.read() << 8 | in.read();
+    try (DataInputStream in = new DataInputStream(
+        new BufferedInputStream(new FileInputStream("member.data")))) {
+
+      int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
         Member member = new Member();
-
-        int len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        member.setName(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        member.setEmail(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        member.setPassword(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        long date = ((long) in.read()) << 56 |
-            ((long) in.read()) << 42 |
-            ((long) in.read()) << 40 |
-            ((long) in.read()) << 32 |
-            ((long) in.read()) << 24 |
-            ((long) in.read()) << 16 |
-            ((long) in.read()) << 8 |
-            in.read();
-        member.setCreatedDate(new java.util.Date(date));
-
+        member.setName(in.readUTF());
+        member.setEmail(in.readUTF());
+        member.setPassword(in.readUTF());
+        member.setCreatedDate(new java.util.Date(in.readLong()));
         memberRepository.add(member);
       }
     } catch (Exception e) {
@@ -179,36 +169,15 @@ public class App {
   }
 
   void saveMember() {
-    try (FileOutputStream out = new FileOutputStream("member.data")) {
-
-      out.write(memberRepository.size() >> 8);
-      out.write(memberRepository.size());
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("member.data")))) {
+      out.writeShort(memberRepository.size());
 
       for (Member member : memberRepository) {
-        byte[] bytes = member.getName().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = member.getEmail().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = member.getPassword().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        long date = member.getCreatedDate().getTime();
-        out.write((int) (date >> 56));
-        out.write((int) (date >> 48));
-        out.write((int) (date >> 40));
-        out.write((int) (date >> 32));
-        out.write((int) (date >> 24));
-        out.write((int) (date >> 16));
-        out.write((int) (date >> 8));
-        out.write((int) date);
+        out.writeUTF(member.getName());
+        out.writeUTF(member.getEmail());
+        out.writeUTF(member.getPassword());
+        out.writeLong(member.getCreatedDate().getTime());
       }
 
     } catch (Exception e) {
@@ -218,35 +187,17 @@ public class App {
   }
 
   void loadBoard() {
-    try (FileInputStream in = new FileInputStream("board.data")) {
-      byte[] bytes = new byte[60000];
-      int size = in.read() << 8 | in.read();
+    try (DataInputStream in = new DataInputStream(
+        (new BufferedInputStream(new FileInputStream("board.data"))))) {
+
+      int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
         Board board = new Board();
-
-        int len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        board.setTitle(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        board.setContent(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        board.setWriter(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        long date = ((long) in.read()) << 56 |
-            ((long) in.read()) << 42 |
-            ((long) in.read()) << 40 |
-            ((long) in.read()) << 32 |
-            ((long) in.read()) << 24 |
-            ((long) in.read()) << 16 |
-            ((long) in.read()) << 8 |
-            in.read();
-        board.setCreatedDate(new java.util.Date(date));
-
+        board.setTitle(in.readUTF());
+        board.setContent(in.readUTF());
+        board.setWriter(in.readUTF());
+        board.setCreatedDate(new java.util.Date(in.readLong()));
         boardRepository.add(board);
       }
     } catch (Exception e) {
@@ -257,35 +208,15 @@ public class App {
   }
 
   void saveBoard() {
-    try (FileOutputStream out = new FileOutputStream("board.data")) {
-      out.write(boardRepository.size() >> 8);
-      out.write(boardRepository.size());
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("board.data")))) {
+      out.writeShort(boardRepository.size());
 
       for (Board board : boardRepository) {
-        byte[] bytes = board.getTitle().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = board.getContent().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = board.getWriter().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        long date = board.getCreatedDate().getTime();
-        out.write((int) (date >> 56));
-        out.write((int) (date >> 48));
-        out.write((int) (date >> 40));
-        out.write((int) (date >> 32));
-        out.write((int) (date >> 24));
-        out.write((int) (date >> 16));
-        out.write((int) (date >> 8));
-        out.write((int) date);
+        out.writeUTF(board.getTitle());
+        out.writeUTF(board.getContent());
+        out.writeUTF(board.getWriter());
+        out.writeLong(board.getCreatedDate().getTime());
       }
     } catch (Exception e) {
       System.out.println("게시글 데이터 저장 중 오류 발생!");
@@ -295,36 +226,18 @@ public class App {
   }
 
   void loadGreeting() {
-    try (FileInputStream in = new FileInputStream("greeting.data")) {
-      byte[] bytes = new byte[60000];
-      int size = in.read() << 8 | in.read();
+    try (DataInputStream in = new DataInputStream(
+        (new BufferedInputStream(new FileInputStream("greeting.data"))))) {
+
+      int size = in.readShort();
 
       for (int i = 0; i < size; i++) {
-        Board greeting = new Board();
-
-        int len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        greeting.setTitle(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        greeting.setContent(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        len = in.read() << 8 | in.read();
-        in.read(bytes, 0, len);
-        greeting.setWriter(new String(bytes, 0, len, StandardCharsets.UTF_8));
-
-        long date = ((long) in.read()) << 56 |
-            ((long) in.read()) << 42 |
-            ((long) in.read()) << 40 |
-            ((long) in.read()) << 32 |
-            ((long) in.read()) << 24 |
-            ((long) in.read()) << 16 |
-            ((long) in.read()) << 8 |
-            in.read();
-        greeting.setCreatedDate(new java.util.Date(date));
-
-        boardRepository.add(greeting);
+        Board board = new Board();
+        board.setTitle(in.readUTF());
+        board.setContent(in.readUTF());
+        board.setWriter(in.readUTF());
+        board.setCreatedDate(new java.util.Date(in.readLong()));
+        greetingRepository.add(board);
       }
     } catch (Exception e) {
       System.out.println("가입인사 데이터 로딩 중 오류 발생!");
@@ -334,35 +247,15 @@ public class App {
   }
 
   void saveGreeting() {
-    try (FileOutputStream out = new FileOutputStream("greeting.data")) {
-      out.write(boardRepository.size() >> 8);
-      out.write(boardRepository.size());
+    try (DataOutputStream out = new DataOutputStream(
+        new BufferedOutputStream(new FileOutputStream("greeting.data")))) {
+      out.writeShort(greetingRepository.size());
 
-      for (Board greeting : boardRepository) {
-        byte[] bytes = greeting.getTitle().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = greeting.getContent().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        bytes = greeting.getWriter().getBytes(StandardCharsets.UTF_8);
-        out.write(bytes.length >> 8);
-        out.write(bytes.length);
-        out.write(bytes);
-
-        long date = greeting.getCreatedDate().getTime();
-        out.write((int) (date >> 56));
-        out.write((int) (date >> 48));
-        out.write((int) (date >> 40));
-        out.write((int) (date >> 32));
-        out.write((int) (date >> 24));
-        out.write((int) (date >> 16));
-        out.write((int) (date >> 8));
-        out.write((int) date);
+      for (Board board : greetingRepository) {
+        out.writeUTF(board.getTitle());
+        out.writeUTF(board.getContent());
+        out.writeUTF(board.getWriter());
+        out.writeLong(board.getCreatedDate().getTime());
       }
     } catch (Exception e) {
       System.out.println("게시글 데이터 저장 중 오류 발생!");
