@@ -19,38 +19,38 @@ import bitcamp.myapp.handler.member.MemberModifyHandler;
 import bitcamp.myapp.handler.member.MemberViewHandler;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
+import bitcamp.myapp.vo.CsvString;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class App {
 
   Prompt prompt = new Prompt(System.in);
 
-  List<Board> boardRepository = new LinkedList<>();
+  List<Board> boardRepository = new ArrayList<>();
   List<Assignment> assignmentRepository = new LinkedList<>();
   List<Member> memberRepository = new ArrayList<>();
-  List<Board> greetingRepository = new ArrayList<>();
+  List<Board> greetingRepository = new LinkedList<>();
 
   MenuGroup mainMenu;
 
   App() {
+    assignmentRepository = loadData("assignment.csv", Assignment.class);
+    memberRepository = loadData("member.csv", Member.class);
+    boardRepository = loadData("board.csv", Board.class);
+    greetingRepository = loadData("greeting.csv", Board.class);
     prepareMenu();
-    loadAssignment();
-    loadBoard();
-    loadMember();
-    loadGreeting();
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     new App().run();
   }
 
@@ -98,167 +98,55 @@ public class App {
         System.out.println("예외 발생!");
       }
     }
-    saveAssignment();
-    saveBoard();
-    saveMember();
-    saveGreeting();
+    saveData("assignment.csv", assignmentRepository);
+    saveData("member.csv", memberRepository);
+    saveData("board.csv", boardRepository);
+    saveData("greeting.csv", greetingRepository);
   }
 
-  void loadAssignment() {
-    try (DataInputStream in = new DataInputStream(
-        (new BufferedInputStream(new FileInputStream("assignment.data"))))) {
-      long start = System.currentTimeMillis();
-      int size = in.readInt();
+//  <E> void loadData(String filepath, List<E> dataList) {
+//    try (ObjectInputStream in = new ObjectInputStream(
+//        (new BufferedInputStream(new FileInputStream(filepath))))) {
+//
+//      List<E> list = (List<E>) in.readObject();
+//      dataList.addAll(list);
+//
+//    } catch (Exception e) {
+//      System.out.printf("%s 파일 로딩 중 오류 발생!\n", filepath);
+//      e.printStackTrace();
+//    }
+//  }
 
-      for (int i = 0; i < size; i++) {
-        Assignment assignment = new Assignment();
-        assignment.setTitle(in.readUTF());
-        assignment.setContent(in.readUTF());
-        assignment.setDeadline(java.sql.Date.valueOf(in.readUTF()));
-        assignmentRepository.add(assignment);
+  <E> List<E> loadData(String filepath, Class<E> clazz) {
+    ArrayList<E> list = new ArrayList<>();
+    try (Scanner in = new Scanner(new FileReader(filepath))) {
+
+      Method factoryMethod = clazz.getMethod("createFromCsv", String.class);
+
+      while (true) {
+        E obj = (E) factoryMethod.invoke(null, in.nextLine());
+        list.add(obj);
       }
-      long end = System.currentTimeMillis();
-      System.out.printf("걸린 시간: %d\n", end - start);
+    } catch (NoSuchElementException e) {
+      System.out.printf("%s 파일 로딩 완료!\n", filepath);
 
     } catch (Exception e) {
-      System.out.println("과제 데이터 로딩 중 오류 발생!");
+      System.out.printf("%s 파일 로딩 중 오류 발생!\n", filepath);
       e.printStackTrace();
     }
+    return new ArrayList<E>();
   }
 
-  void saveAssignment() {
-    try (DataOutputStream out = new DataOutputStream(
-        new BufferedOutputStream(new FileOutputStream("assignment.data")))) {
-      long start = System.currentTimeMillis();
-      // 저장할 데이터 개수를 2바이트로 출력한다.
-      out.writeInt(assignmentRepository.size());
 
-      for (Assignment assignment : assignmentRepository) {
-        out.writeUTF(assignment.getTitle());
-        out.writeUTF(assignment.getContent());
-        out.writeUTF(assignment.getDeadline().toString());
-      }
+  void saveData(String filepath, List<? extends CsvString> dataList) {
+    try (FileWriter out = new FileWriter(filepath)) {
 
-      long end = System.currentTimeMillis();
-      System.out.printf("걸린 시간: %d\n", end - start);
-
-    } catch (Exception e) {
-      System.out.println("과제 데이터 저장 중 오류 발생!");
-      e.printStackTrace();
-    }
-  }
-
-  void loadMember() {
-    try (DataInputStream in = new DataInputStream(
-        new BufferedInputStream(new FileInputStream("member.data")))) {
-
-      int size = in.readShort();
-
-      for (int i = 0; i < size; i++) {
-        Member member = new Member();
-        member.setName(in.readUTF());
-        member.setEmail(in.readUTF());
-        member.setPassword(in.readUTF());
-        member.setCreatedDate(new java.util.Date(in.readLong()));
-        memberRepository.add(member);
-      }
-    } catch (Exception e) {
-      System.out.println("회원 데이터 로딩 중 오류 발생!");
-      e.printStackTrace();
-    }
-  }
-
-  void saveMember() {
-    try (DataOutputStream out = new DataOutputStream(
-        new BufferedOutputStream(new FileOutputStream("member.data")))) {
-      out.writeShort(memberRepository.size());
-
-      for (Member member : memberRepository) {
-        out.writeUTF(member.getName());
-        out.writeUTF(member.getEmail());
-        out.writeUTF(member.getPassword());
-        out.writeLong(member.getCreatedDate().getTime());
+      for (CsvString csvObject : dataList) {
+        out.write(csvObject.toCsvString() + "\n");
       }
 
     } catch (Exception e) {
-      System.out.println("회원 데이터 저장 중 오류 발생!");
-      e.printStackTrace();
-    }
-  }
-
-  void loadBoard() {
-    try (DataInputStream in = new DataInputStream(
-        (new BufferedInputStream(new FileInputStream("board.data"))))) {
-
-      int size = in.readShort();
-
-      for (int i = 0; i < size; i++) {
-        Board board = new Board();
-        board.setTitle(in.readUTF());
-        board.setContent(in.readUTF());
-        board.setWriter(in.readUTF());
-        board.setCreatedDate(new java.util.Date(in.readLong()));
-        boardRepository.add(board);
-      }
-    } catch (Exception e) {
-      System.out.println("게시글 데이터 로딩 중 오류 발생!");
-      e.printStackTrace();
-    }
-
-  }
-
-  void saveBoard() {
-    try (DataOutputStream out = new DataOutputStream(
-        new BufferedOutputStream(new FileOutputStream("board.data")))) {
-      out.writeShort(boardRepository.size());
-
-      for (Board board : boardRepository) {
-        out.writeUTF(board.getTitle());
-        out.writeUTF(board.getContent());
-        out.writeUTF(board.getWriter());
-        out.writeLong(board.getCreatedDate().getTime());
-      }
-    } catch (Exception e) {
-      System.out.println("게시글 데이터 저장 중 오류 발생!");
-      e.printStackTrace();
-    }
-
-  }
-
-  void loadGreeting() {
-    try (DataInputStream in = new DataInputStream(
-        (new BufferedInputStream(new FileInputStream("greeting.data"))))) {
-
-      int size = in.readShort();
-
-      for (int i = 0; i < size; i++) {
-        Board board = new Board();
-        board.setTitle(in.readUTF());
-        board.setContent(in.readUTF());
-        board.setWriter(in.readUTF());
-        board.setCreatedDate(new java.util.Date(in.readLong()));
-        greetingRepository.add(board);
-      }
-    } catch (Exception e) {
-      System.out.println("가입인사 데이터 로딩 중 오류 발생!");
-      e.printStackTrace();
-    }
-
-  }
-
-  void saveGreeting() {
-    try (DataOutputStream out = new DataOutputStream(
-        new BufferedOutputStream(new FileOutputStream("greeting.data")))) {
-      out.writeShort(greetingRepository.size());
-
-      for (Board board : greetingRepository) {
-        out.writeUTF(board.getTitle());
-        out.writeUTF(board.getContent());
-        out.writeUTF(board.getWriter());
-        out.writeLong(board.getCreatedDate().getTime());
-      }
-    } catch (Exception e) {
-      System.out.println("게시글 데이터 저장 중 오류 발생!");
+      System.out.printf("%s 파일 저장 중 오류 발생!\n", filepath);
       e.printStackTrace();
     }
   }
