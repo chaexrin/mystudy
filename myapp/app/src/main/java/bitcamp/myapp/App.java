@@ -19,17 +19,17 @@ import bitcamp.myapp.handler.member.MemberModifyHandler;
 import bitcamp.myapp.handler.member.MemberViewHandler;
 import bitcamp.myapp.vo.Assignment;
 import bitcamp.myapp.vo.Board;
-import bitcamp.myapp.vo.CsvString;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.Prompt;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class App {
 
@@ -43,10 +43,10 @@ public class App {
   MenuGroup mainMenu;
 
   App() {
-    assignmentRepository = loadData("assignment.csv", Assignment.class);
-    memberRepository = loadData("member.csv", Member.class);
-    boardRepository = loadData("board.csv", Board.class);
-    greetingRepository = loadData("greeting.csv", Board.class);
+    assignmentRepository = loadData("assignment.json", Assignment.class);
+    memberRepository = loadData("member.json", Member.class);
+    boardRepository = loadData("board.json", Board.class);
+    greetingRepository = loadData("greeting.json", Board.class);
     prepareMenu();
   }
 
@@ -98,10 +98,10 @@ public class App {
         System.out.println("예외 발생!");
       }
     }
-    saveData("assignment.csv", assignmentRepository);
-    saveData("member.csv", memberRepository);
-    saveData("board.csv", boardRepository);
-    saveData("greeting.csv", greetingRepository);
+    saveData("assignment.json", assignmentRepository);
+    saveData("member.json", memberRepository);
+    saveData("board.json", boardRepository);
+    saveData("greeting.json", greetingRepository);
   }
 
 //  <E> void loadData(String filepath, List<E> dataList) {
@@ -118,32 +118,32 @@ public class App {
 //  }
 
   <E> List<E> loadData(String filepath, Class<E> clazz) {
-    ArrayList<E> list = new ArrayList<>();
-    try (Scanner in = new Scanner(new FileReader(filepath))) {
 
-      Method factoryMethod = clazz.getMethod("createFromCsv", String.class);
+    try (BufferedReader in = new BufferedReader(new FileReader(filepath))) {
 
-      while (true) {
-        E obj = (E) factoryMethod.invoke(null, in.nextLine());
-        list.add(obj);
+      StringBuilder strBuilder = new StringBuilder();
+      String str;
+
+      while ((str = in.readLine()) != null) {
+        strBuilder.append(str);
       }
-    } catch (NoSuchElementException e) {
-      System.out.printf("%s 파일 로딩 완료!\n", filepath);
+
+      return (List<E>) new GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+          .fromJson(strBuilder.toString(),
+              TypeToken.getParameterized(ArrayList.class, clazz));
 
     } catch (Exception e) {
       System.out.printf("%s 파일 로딩 중 오류 발생!\n", filepath);
       e.printStackTrace();
     }
-    return new ArrayList<E>();
+    return new ArrayList<>();
   }
 
 
-  void saveData(String filepath, List<? extends CsvString> dataList) {
-    try (FileWriter out = new FileWriter(filepath)) {
+  void saveData(String filepath, List<?> dataList) {
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(filepath))) {
 
-      for (CsvString csvObject : dataList) {
-        out.write(csvObject.toCsvString() + "\n");
-      }
+      out.write(new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(dataList));
 
     } catch (Exception e) {
       System.out.printf("%s 파일 저장 중 오류 발생!\n", filepath);
