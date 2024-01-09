@@ -28,22 +28,19 @@ public class Exam0114 {
 
     // 2) JSON 처리 객체 준비
     // - 메서드를 호출할 때 체인 방식으로 처리하기
-    // 
+    //
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    Gson gson = new GsonBuilder()
-        .registerTypeAdapter(Date.class, new JsonSerializer<Date>() {
-          @Override
-          public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(dateFormat.format(src));
-          }
-        })
-        .registerTypeAdapter(School.class, new JsonSerializer<School>() {
-          @Override
-          public JsonElement serialize(School src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(String.format("%s(%s)", src.level, src.name));
-          }
-        })
-        .create();
+    Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new JsonSerializer<Date>() {
+      @Override
+      public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(dateFormat.format(src));
+      }
+    }).registerTypeAdapter(School.class, new JsonSerializer<School>() {
+      @Override
+      public JsonElement serialize(School src, Type typeOfSrc, JsonSerializationContext context) {
+        return new JsonPrimitive(String.format("%s(%s)", src.level, src.name));
+      }
+    }).create();
 
     // 3) 객체의 값을 JSON 문자열로 얻기
     String jsonStr = gson.toJson(m);
@@ -57,11 +54,18 @@ public class Exam0114 {
 //
 // 값:
 // - 문자열 => "값"
-// - 숫자   => 값
-// - 논리   => true, false
+// - 숫자 => 값
+// - 논리 => true, false
 //
 // 프로퍼티명은 반드시 문자열로 표현해야 한다.
 
-
+// {"no":100,
+// "fullname":"홍길동",
+// "email":"hong@test.com",
+// "password":"1111",
+// "photo":"hong.gif",
+// "tel":"010-2222-1111",
+// "registeredDate":"2024-01-09",
+// "school":"학사(비트대학교)"}
 
 

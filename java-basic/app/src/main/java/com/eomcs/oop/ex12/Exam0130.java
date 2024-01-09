@@ -7,7 +7,9 @@ public class Exam0130 {
     void play(String name);
   }
 
+
   public static void main(String[] args) {
+
     // 1) 파라미터는 괄호() 안에 선언한다.
     Player p1 = (String name) -> System.out.println(name + " 님 환영합니다.");
     p1.play("홍길동");

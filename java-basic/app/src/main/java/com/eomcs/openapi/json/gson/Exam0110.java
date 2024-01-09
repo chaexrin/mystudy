@@ -32,11 +32,16 @@ public class Exam0110 {
 //
 // 값:
 // - 문자열 => "값"
-// - 숫자   => 값
-// - 논리   => true, false
+// - 숫자 => 값
+// - 논리 => true, false
 //
 // 프로퍼티명은 반드시 문자열로 표현해야 한다.
 
-
+// {"no":100,"fullname":"홍길동",
+// "email":"hong@test.com",
+// "password":"1111",
+// "photo":"hong.gif",
+// "tel":"010-2222-1111",
+// "registeredDate":"1월 9, 2024"}
 
 

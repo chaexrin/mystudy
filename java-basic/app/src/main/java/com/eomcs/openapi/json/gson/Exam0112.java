@@ -57,15 +57,13 @@ public class Exam0112 {
     GsonBuilder builder = new GsonBuilder();
 
     // Date 타입의 프로퍼티 값을 JSON 형식의 문자열로 바꿔줄 변환기를 등록한다.
-    builder.registerTypeAdapter(
-        Date.class, // 원래 데이터의 타입
+    builder.registerTypeAdapter(Date.class, // 원래 데이터의 타입
         new GsonDateFormatAdapter() // Date 형식의 데이터를 JSON 문자열로 바꿔줄 변환기
-        );
+    );
 
-    builder.registerTypeAdapter(
-        School.class, // 원래 데이터의 타입
+    builder.registerTypeAdapter(School.class, // 원래 데이터의 타입
         new GsonSchoolFormatAdapter() // Date 형식의 데이터를 JSON 문자열로 바꿔줄 변환기
-        );
+    );
     Gson gson = builder.create();
 
     // 3) 객체의 값을 JSON 문자열로 얻기
@@ -80,11 +78,20 @@ public class Exam0112 {
 //
 // 값:
 // - 문자열 => "값"
-// - 숫자   => 값
-// - 논리   => true, false
+// - 숫자 => 값
+// - 논리 => true, false
 //
 // 프로퍼티명은 반드시 문자열로 표현해야 한다.
 
+// System.out.println(src.getTime()); 1704759024172
 
+// {"no":100,
+// "fullname":"홍길동",
+// "email":"hong@test.com",
+// "password":"1111",
+// "photo":"hong.gif",
+// "tel":"010-2222-1111",
+// "registeredDate":"2024-01-09",
+// "school":"학사(비트대학교)"}
 
 
