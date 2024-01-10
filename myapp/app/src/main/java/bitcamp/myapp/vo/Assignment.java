@@ -19,7 +19,15 @@ public class Assignment implements Serializable {
     obj.setDeadline(Date.valueOf(values[2]));
     return obj;
   }
-  
+
+  @Override
+  public String toString() {
+    return "Assignment{" +
+        "title='" + title + '\'' +
+        ", content='" + content + '\'' +
+        ", deadline=" + deadline +
+        '}';
+  }
 
   public String getTitle() {
     return title;

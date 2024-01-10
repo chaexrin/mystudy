@@ -20,7 +20,16 @@ public class Board implements Serializable {
     obj.setCreatedDate(new Date(Long.valueOf(values[3])));
     return obj;
   }
-  
+
+  @Override
+  public String toString() {
+    return "Board{" +
+        "title='" + title + '\'' +
+        ", content='" + content + '\'' +
+        ", writer='" + writer + '\'' +
+        ", createdDate=" + createdDate +
+        '}';
+  }
 
   public String getTitle() {
     return title;

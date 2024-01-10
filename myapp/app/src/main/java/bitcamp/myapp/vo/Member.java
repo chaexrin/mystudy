@@ -21,7 +21,17 @@ public class Member implements Serializable {
     obj.setCreatedDate(new Date(Long.valueOf(values[3])));
     return obj;
   }
-  
+
+  @Override
+  public String toString() {
+    return "Member{" +
+        "email='" + email + '\'' +
+        ", name='" + name + '\'' +
+        ", password='" + password + '\'' +
+        ", createdDate=" + createdDate +
+        '}';
+  }
+
   public String getEmail() {
     return email;
   }

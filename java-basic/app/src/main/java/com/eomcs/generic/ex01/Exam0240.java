@@ -6,14 +6,20 @@ import com.eomcs.generic.ex02.Member;
 public class Exam0240 {
 
   static class Box<T> {
-    T value; 
-    public T get() {return this.value;}
-    public void set(T value) {this.value = value;}
+    T value;
+
+    public T get() {
+      return this.value;
+    }
+
+    public void set(T value) {
+      this.value = value;
+    }
   }
 
   public static void main(String[] args) {
 
-    // 제네릭을 사용하면 한 개의 클래스를 가지고 
+    // 제네릭을 사용하면 한 개의 클래스를 가지고
     // 특정 타입만을 다루는 전용 객체를 만들 수 있다.
     Box<Member> b1 = new Box<>();
     Box<String> b2 = new Box<>();
@@ -28,6 +34,7 @@ public class Exam0240 {
     Member v1 = b1.get();
     String v2 = b2.get();
     Integer v3 = b3.get();
+
 
     System.out.println(v1);
     System.out.println(v2);
