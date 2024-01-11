@@ -1,10 +1,5 @@
 package bitcamp.myapp.dao;
 
-// 이 클래스의 목적
-// - RuntimeException의 기능을 확장하는 것이 아니다.
-// - 예외가 발생했을 때 클래스 이름으로 어느 작업에서 예외가 발생했는지 바로 알아챌 수 있도록 하기 위함.
-// -
-
 public class DaoException extends RuntimeException {
 
   public DaoException() {

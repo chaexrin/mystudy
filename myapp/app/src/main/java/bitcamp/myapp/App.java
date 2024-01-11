@@ -104,33 +104,21 @@ public class App {
     saveData("greeting.json", greetingRepository);
   }
 
-//  <E> void loadData(String filepath, List<E> dataList) {
-//    try (ObjectInputStream in = new ObjectInputStream(
-//        (new BufferedInputStream(new FileInputStream(filepath))))) {
-//
-//      List<E> list = (List<E>) in.readObject();
-//      dataList.addAll(list);
-//
-//    } catch (Exception e) {
-//      System.out.printf("%s 파일 로딩 중 오류 발생!\n", filepath);
-//      e.printStackTrace();
-//    }
-//  }
-
   <E> List<E> loadData(String filepath, Class<E> clazz) {
 
     try (BufferedReader in = new BufferedReader(new FileReader(filepath))) {
 
+      // 파일에서 JSON 문자열을 모두 읽어서 버퍼에 저장한다.
       StringBuilder strBuilder = new StringBuilder();
       String str;
-
       while ((str = in.readLine()) != null) {
         strBuilder.append(str);
       }
 
-      return (List<E>) new GsonBuilder().setDateFormat("yyyy-MM-dd").create()
-          .fromJson(strBuilder.toString(),
-              TypeToken.getParameterized(ArrayList.class, clazz));
+      // 버퍼에 저장된 JSON 문자열을 가지고 컬렉션 객체를 생성한다.
+      return (List<E>) new GsonBuilder().setDateFormat("yyyy-MM-dd").create().fromJson(
+          strBuilder.toString(),
+          TypeToken.getParameterized(ArrayList.class, clazz));
 
     } catch (Exception e) {
       System.out.printf("%s 파일 로딩 중 오류 발생!\n", filepath);
@@ -138,7 +126,6 @@ public class App {
     }
     return new ArrayList<>();
   }
-
 
   void saveData(String filepath, List<?> dataList) {
     try (BufferedWriter out = new BufferedWriter(new FileWriter(filepath))) {
@@ -150,6 +137,4 @@ public class App {
       e.printStackTrace();
     }
   }
-
-
 }
