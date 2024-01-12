@@ -104,7 +104,7 @@ public class ServerApp {
         // 메서드를 호출한다.
         Object returnValue = commandHandler.invoke(dao, args);
 
-        out.writeUTF("200");
+        out.writeUTF("200"); // 주석하면 json 파일 안불러와짐..왜지?
 
         out.writeUTF(gson.toJson(returnValue));
         System.out.println("클라이언트에게 응답완료");
