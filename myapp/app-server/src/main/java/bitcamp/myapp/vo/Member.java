@@ -7,20 +7,20 @@ public class Member implements Serializable {
 
   private static final long serialVersionUID = 100L;
 
+  private int no;
   private String email;
   private String name;
   private String password;
   private Date createdDate;
-  private int no;
 
   @Override
   public String toString() {
     return "Member{" +
-        "email='" + email + '\'' +
+        "no=" + no +
+        ", email='" + email + '\'' +
         ", name='" + name + '\'' +
         ", password='" + password + '\'' +
         ", createdDate=" + createdDate +
-        ", no=" + no +
         '}';
   }
 
@@ -32,7 +32,6 @@ public class Member implements Serializable {
     this.no = no;
   }
 
- 
   public String getEmail() {
     return email;
   }

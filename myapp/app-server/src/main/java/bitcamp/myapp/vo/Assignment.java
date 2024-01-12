@@ -7,18 +7,18 @@ public class Assignment implements Serializable {
 
   private static final long serialVersionUID = 100L;
 
+  private int no;
   private String title;
   private String content;
   private Date deadline;
-  private int no;
 
   @Override
   public String toString() {
     return "Assignment{" +
-        "title='" + title + '\'' +
+        "no=" + no +
+        ", title='" + title + '\'' +
         ", content='" + content + '\'' +
         ", deadline=" + deadline +
-        ", no=" + no +
         '}';
   }
 
@@ -29,7 +29,6 @@ public class Assignment implements Serializable {
   public void setNo(int no) {
     this.no = no;
   }
-
 
   public String getTitle() {
     return title;

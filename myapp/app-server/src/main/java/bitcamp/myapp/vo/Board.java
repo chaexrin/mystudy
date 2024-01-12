@@ -7,21 +7,20 @@ public class Board implements Serializable {
 
   private static final long serialVersionUID = 100L;
 
+  private int no;
   private String title;
   private String content;
   private String writer;
   private Date createdDate;
-  private int no;
-
-
+  
   @Override
   public String toString() {
     return "Board{" +
-        "title='" + title + '\'' +
+        "no=" + no +
+        ", title='" + title + '\'' +
         ", content='" + content + '\'' +
         ", writer='" + writer + '\'' +
         ", createdDate=" + createdDate +
-        ", no=" + no +
         '}';
   }
 
