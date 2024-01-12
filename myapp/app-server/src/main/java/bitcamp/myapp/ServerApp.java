@@ -6,6 +6,7 @@ import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.dao.json.AssignmentDaoImpl;
 import bitcamp.myapp.dao.json.BoardDaoImpl;
 import bitcamp.myapp.dao.json.MemberDaoImpl;
+import com.google.gson.GsonBuilder;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ServerSocket;
@@ -46,9 +47,6 @@ public class ServerApp {
       DataOutputStream out = new DataOutputStream(socket.getOutputStream());
       System.out.println("입출력 준비 완료!");
 
-      System.out.println("10초 동안 잠시 기다림!");
-      Thread.sleep(10000);
-
       String dataName = in.readUTF();
       String command = in.readUTF();
       String value = in.readUTF();
@@ -58,10 +56,10 @@ public class ServerApp {
       System.out.println(command);
       System.out.println(value);
 
-      System.out.println("10초 동안 잠시 기다림!");
-      Thread.sleep(10000);
+      String json = new GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+          .toJson(boardDao.findAll());
 
-      out.writeUTF("OK!");
+      out.writeUTF(json);
       System.out.println("클라이언트로 데이터 전송!");
 
       // 3) 클라이언트와 통신

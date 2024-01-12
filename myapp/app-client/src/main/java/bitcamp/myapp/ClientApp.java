@@ -23,10 +23,14 @@ import bitcamp.myapp.handler.member.MemberDeleteHandler;
 import bitcamp.myapp.handler.member.MemberListHandler;
 import bitcamp.myapp.handler.member.MemberModifyHandler;
 import bitcamp.myapp.handler.member.MemberViewHandler;
+import bitcamp.myapp.vo.Board;
 import bitcamp.util.Prompt;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientApp {
 
@@ -70,8 +74,13 @@ public class ClientApp {
       System.out.println("서버에 데이터를 보냈음!");
 
       String response = in.readUTF();
-      System.out.println(response);
+      ArrayList<Board> list = (ArrayList<Board>) new GsonBuilder().setDateFormat("yyyy-MM-dd")
+          .create().fromJson(response, TypeToken.getParameterized(
+              ArrayList.class, Board.class));
 
+      for (Board board : list) {
+        System.out.println(response);
+      }
 
     } catch (Exception e) {
       System.out.println("통신 오류!");
