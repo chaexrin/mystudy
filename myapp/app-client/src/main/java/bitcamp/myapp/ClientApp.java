@@ -3,10 +3,8 @@ package bitcamp.myapp;
 import bitcamp.menu.MenuGroup;
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.dao.BoardDao;
+import bitcamp.myapp.dao.DaoProxyGenerator;
 import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.dao.network.AssignmentDaoImpl;
-import bitcamp.myapp.dao.network.BoardDaoImpl;
-import bitcamp.myapp.dao.network.MemberDaoImpl;
 import bitcamp.myapp.handler.HelpHandler;
 import bitcamp.myapp.handler.assignment.AssignmentAddHandler;
 import bitcamp.myapp.handler.assignment.AssignmentDeleteHandler;
@@ -61,18 +59,19 @@ public class ClientApp {
       // => 로컬 컴퓨터를 가리키는 주소
       //   - IP 주소: 127.0.0.1
       //   - 도메인명: localhost
+      
+// stateful 방식이었을때..
+//      socket = new Socket("localhost", 8888);
+//      System.out.println("서버와 연결되었음!");
+//      in = new DataInputStream(socket.getInputStream());
+//      out = new DataOutputStream(socket.getOutputStream());
 
-      socket = new Socket("localhost", 8888);
-      System.out.println("서버와 연결되었음!");
-
-      in = new DataInputStream(socket.getInputStream());
-      out = new DataOutputStream(socket.getOutputStream());
-
+      DaoProxyGenerator daoGenerator = new DaoProxyGenerator("localhost", 8888);
       // 네트워크 DAO 구현체 준비
-      boardDao = new BoardDaoImpl("board", in, out);
-      greetingDao = new BoardDaoImpl("greeting", in, out);
-      assignmentDao = new AssignmentDaoImpl("assignment", in, out);
-      memberDao = new MemberDaoImpl("member", in, out);
+      boardDao = daoGenerator.create(BoardDao.class, "board");
+      greetingDao = daoGenerator.create(BoardDao.class, "greeting");
+      assignmentDao = daoGenerator.create(AssignmentDao.class, "assignment");
+      memberDao = daoGenerator.create(MemberDao.class, "member");
 
     } catch (Exception e) {
       System.out.println("통신 오류!");
@@ -119,7 +118,7 @@ public class ClientApp {
       try {
         mainMenu.execute(prompt);
         prompt.close();
-        close(); // 서버와 연결 닫음..
+
         break;
       } catch (Exception e) {
         System.out.println("예외 발생!");

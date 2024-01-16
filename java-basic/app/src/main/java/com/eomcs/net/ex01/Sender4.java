@@ -33,8 +33,13 @@ public class Sender4 {
 
     // 3) 파일 데이터 보내기
     int b;
+    int count = 0;
     while ((b = fileIn.read()) != -1) {
       out.write(b);
+      count++;
+      if (count % 1024 == 0) {
+        System.out.println("1KB 보냄!");
+      }
     }
 
     long endTime = System.currentTimeMillis();
