@@ -14,9 +14,11 @@ public class Exam0130 {
     // 하위 그룹에 소속된 스레드들은 제외한다.
     // 즉, 현재 그룹에 소속된 스레드 목록만 가져오라는 뜻!
 
+
     System.out.println("main 그룹에 소속된 스레드들:");
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < count; i++) {
       System.out.println("   => " + arr[i].getName());
+    }
   }
 }
 
