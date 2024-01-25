@@ -9,8 +9,8 @@ public class Exam0630 {
 
     Worker1 w1 = new Worker1("홍길동", job1);
     Worker2 w2 = new Worker2("임꺽정", job1);
-    Worker3 w3 = new Worker3("안중근", job2);
-    Worker4 w4 = new Worker4("유관순", job1);
+    Worker3 w3 = new Worker3("안중근", job1);
+    Worker4 w4 = new Worker4("유관순", job2);
 
     w1.start();
     w2.start();
