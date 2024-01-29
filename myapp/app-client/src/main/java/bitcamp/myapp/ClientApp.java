@@ -64,8 +64,8 @@ public class ClientApp {
 
             boardDao = new BoardDaoImpl(con, 1);
             greetingDao = new BoardDaoImpl(con, 2);
-            assignmentDao = new AssignmentDaoImpl(con);
-            memberDao = new MemberDaoImpl(con);
+            assignmentDao = new AssignmentDaoImpl(con, 3);
+            memberDao = new MemberDaoImpl(con, 4);
 
         } catch (Exception e) {
             System.out.println("통신 오류!");
