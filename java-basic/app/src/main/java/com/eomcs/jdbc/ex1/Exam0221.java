@@ -11,7 +11,7 @@ public class Exam0221 {
 
     while (true) {
       try (java.sql.Connection con = DriverManager
-          .getConnection("jdbc:mariadb://localhost:3306/studydb", "study", "bitcamp!@#123");) {
+          .getConnection("jdbc:mysql://localhost:3306/studydb", "study", "bitcamp!@#123");) {
 
         System.out.printf("DBMS와 연결됨 = %d\n", ++count);
 

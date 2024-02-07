@@ -4,8 +4,8 @@ import bitcamp.myapp.dao.DaoException;
 import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.vo.Member;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +21,14 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public void add(Member member) {
-        try {
-            Statement stmt = con.createStatement();
-            String sql = String.format(
-                "insert into members(email,name, password) values('%s', '%s', sha2('%s',256))",
-                member.getEmail(), member.getName(), member.getPassword());
-            stmt.executeUpdate(sql);
+        try (PreparedStatement pstmt = con.prepareStatement(
+            "insert into members(email,name, password) values(?,?,?)")) {
+
+            pstmt.setString(1, member.getEmail());
+            pstmt.setString(2, member.getName());
+            pstmt.setString(3, member.getPassword());
+
+            pstmt.executeUpdate();
 
         } catch (Exception e) {
             throw new DaoException("데이터 입력 오류", e);
@@ -35,9 +37,12 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public int delete(int no) {
-        try {
-            Statement stmt = con.createStatement();
-            return stmt.executeUpdate(String.format("delete from members where member_no=%d", no));
+        try (PreparedStatement pstmt = con.prepareStatement(
+            "delete from members where member_no=?")) {
+
+            pstmt.setInt(1, no);
+
+            return pstmt.executeUpdate();
 
         } catch (Exception e) {
             throw new DaoException("데이터 입력 오류", e);
@@ -46,9 +51,9 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<Member> findAll() {
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from members");
+        try (PreparedStatement pstmt = con.prepareStatement(
+            "select member_no, email, name, created_date from members order by member_no desc");
+            ResultSet rs = pstmt.executeQuery()) {
 
             ArrayList<Member> list = new ArrayList<>();
 
@@ -70,21 +75,24 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public Member findBy(int no) {
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from members where member_no = " + no);
+        try (PreparedStatement pstmt = con.prepareStatement(
+            "select * from members where member_no =?")) {
 
-            if (rs.next()) {
-                Member member = new Member();
-                member.setNo(rs.getInt("member_no"));
-                member.setEmail(rs.getString("email"));
-                member.setName(rs.getString("name"));
-                member.setCreatedDate(rs.getDate("created_date"));
+            pstmt.setInt(1, no);
 
-                return member;
+            try (ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    Member member = new Member();
+                    member.setNo(rs.getInt("member_no"));
+                    member.setEmail(rs.getString("email"));
+                    member.setName(rs.getString("name"));
+                    member.setCreatedDate(rs.getDate("created_date"));
+
+                    return member;
+                }
+                return null;
             }
-            return null;
-
         } catch (Exception e) {
             throw new DaoException("데이터 가져오기 오류", e);
         }
@@ -92,11 +100,16 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public int update(Member member) {
-        try {
-            Statement stmt = con.createStatement();
-            return stmt.executeUpdate(String.format(
-                "update members set email='%s', name='%s', password=sha2('%s',256) where member_no=%d",
-                member.getEmail(), member.getName(), member.getPassword(), member.getNo()));
+        try (PreparedStatement pstmt = con.prepareStatement(
+            "update members set email=?, name=?, password=? where member_no=?")) {
+
+            pstmt.setString(1, member.getEmail());
+            pstmt.setString(2, member.getName());
+            pstmt.setString(3, member.getPassword());
+            pstmt.setInt(4, member.getNo());
+
+            return pstmt.executeUpdate();
+
 
         } catch (Exception e) {
             throw new DaoException("데이터 입력 오류", e);
