@@ -1,20 +1,19 @@
 package bitcamp.myapp.dao;
 
 import bitcamp.myapp.vo.Member;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface MemberDao {
 
-    public void add(Member member) throws SQLException;
+  public void add(Member member);
 
-    public int delete(int no);
+  public int delete(int no);
 
-    public List<Member> findAll();
+  public List<Member> findAll();
 
-    public Member findBy(int no);
+  public Member findBy(int no);
 
-    public int update(Member member);
+  public int update(Member member);
 
-    ;
+  ;
 }

@@ -9,24 +9,24 @@ import bitcamp.util.Prompt;
 //
 public class MenuItem extends AbstractMenu {
 
-    private MenuHandler menuHandler;
+  private MenuHandler menuHandler;
 
-    public MenuItem(String title) {
-        super(title);
-    }
+  public MenuItem(String title) {
+    super(title);
+  }
 
-    public MenuItem(String title, MenuHandler menuHandler) {
-        this(title);
-        this.menuHandler = menuHandler;
-    }
+  public MenuItem(String title, MenuHandler menuHandler) {
+    this(title);
+    this.menuHandler = menuHandler;
+  }
 
-    public void execute(Prompt prompt) {
-        if (this.menuHandler != null) {
-            try {
-                this.menuHandler.action(this, prompt);
-            } catch (Exception e) {
-                prompt.println("실행 오류!");
-            }
-        }
+  public void execute(Prompt prompt) {
+    if (this.menuHandler != null) {
+      try {
+        this.menuHandler.action(this, prompt);
+      } catch (Exception e) {
+        System.out.println("실행 오류!");
+      }
     }
+  }
 }

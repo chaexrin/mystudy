@@ -7,82 +7,81 @@ import java.util.List;
 
 public class MenuGroup extends AbstractMenu {
 
-    private List<Menu> menus = new LinkedList<>();
+  private List<Menu> menus = new LinkedList<>();
 
-    private MenuGroup(String title) {
-        super(title);
-    }
+  private MenuGroup(String title) {
+    super(title);
+  }
 
-    public static MenuGroup getInstance(String title) {
-        return new MenuGroup(title);
-    }
+  public static MenuGroup getInstance(String title) {
+    return new MenuGroup(title);
+  }
 
-    @Override
-    public void execute(Prompt prompt) throws Exception {
+  @Override
+  public void execute(Prompt prompt) throws Exception {
 
-        prompt.pushPath(this.title);
+    prompt.pushPath(this.title);
 
+    this.printMenu(prompt);
+
+    while (true) {
+      String input = prompt.input("%s>", prompt.getFullPath());
+
+      if (input.equals("menu")) {
         this.printMenu(prompt);
+        continue;
+      } else if (input.equals("0")) {
+        break;
+      }
 
-        while (true) {
-
-            String input = prompt.input("%s>", prompt.getFullPath());
-
-            if (input.equals("menu")) {
-                this.printMenu(prompt);
-                continue;
-            } else if (input.equals("0")) {
-                break;
-            }
-
-            try {
-                int menuNo = Integer.parseInt(input);
-                if (menuNo < 1 || menuNo > this.menus.size()) {
-                    prompt.println("메뉴 번호가 옳지 않습니다.");
-                    continue;
-                }
-
-                this.menus.get(menuNo - 1).execute(prompt);
-
-            } catch (Exception e) {
-                prompt.println("메뉴가 옳지 않습니다!");
-            }
+      try {
+        int menuNo = Integer.parseInt(input);
+        if (menuNo < 1 || menuNo > this.menus.size()) {
+          System.out.println("메뉴 번호가 옳지 않습니다.");
+          continue;
         }
 
-        // 메뉴를 나갈 때 breadcrumb 메뉴 경로에서 메뉴 제목을 제거한다.
-        prompt.popPath();
+        this.menus.get(menuNo - 1).execute(prompt);
+
+      } catch (Exception e) {
+        System.out.println("메뉴가 옳지 않습니다!");
+      }
     }
 
-    private void printMenu(Prompt prompt) {
-        prompt.printf("[%s]\n", this.getTitle());
+    // 메뉴를 나갈 때 breadcrumb 메뉴 경로에서 메뉴 제목을 제거한다.
+    prompt.popPath();
+  }
 
-        Iterator<Menu> iterator = this.menus.iterator();
-        int i = 1;
-        while (iterator.hasNext()) {
-            Menu menu = iterator.next();
-            prompt.printf("%d. %s\n", i++, menu.getTitle());
-        }
+  private void printMenu(Prompt prompt) {
+    prompt.printf("[%s]\n", this.getTitle());
 
-        prompt.printf("0. %s\n", "이전");
+    Iterator<Menu> iterator = this.menus.iterator();
+    int i = 1;
+    while (iterator.hasNext()) {
+      Menu menu = iterator.next();
+      prompt.printf("%d. %s\n", i++, menu.getTitle());
     }
 
-    public void add(Menu menu) {
-        this.menus.add(menu);
-    }
+    prompt.printf("0. %s\n", "이전");
+  }
 
-    public MenuItem addItem(String title, MenuHandler handler) {
-        MenuItem menuItem = new MenuItem(title, handler);
-        this.add(menuItem);
-        return menuItem;
-    }
+  public void add(Menu menu) {
+    this.menus.add(menu);
+  }
 
-    public MenuGroup addGroup(String title) {
-        MenuGroup menuGroup = new MenuGroup(title);
-        this.add(menuGroup);
-        return menuGroup;
-    }
+  public MenuItem addItem(String title, MenuHandler handler) {
+    MenuItem menuItem = new MenuItem(title, handler);
+    this.add(menuItem);
+    return menuItem;
+  }
 
-    public void remove(Menu menu) {
-        this.menus.remove(menu);
-    }
+  public MenuGroup addGroup(String title) {
+    MenuGroup menuGroup = new MenuGroup(title);
+    this.add(menuGroup);
+    return menuGroup;
+  }
+
+  public void remove(Menu menu) {
+    this.menus.remove(menu);
+  }
 }
