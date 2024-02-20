@@ -3,6 +3,7 @@
  */
 package c.hw;
 
+import com.dining.App;
 import org.junit.jupiter.api.Test;
 
 class AppTest {

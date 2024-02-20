@@ -1,44 +1,33 @@
 package bitcamp.myapp.servlet.auth;
 
 import bitcamp.myapp.dao.MemberDao;
-import bitcamp.myapp.dao.mysql.MemberDaoImpl;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.DBConnectionPool;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/auth/login")
-public class LoginServlet extends GenericServlet {
+public class LoginServlet extends HttpServlet {
 
     MemberDao memberDao;
 
-    public LoginServlet() {
-        DBConnectionPool connectionPool = new DBConnectionPool(
-            "jdbc:mysql://localhost/studydb", "study", "bitcamp!@#123");
-        this.memberDao = new MemberDaoImpl(connectionPool);
+    @Override
+    public void init() {
+        this.memberDao = (MemberDao) this.getServletContext().getAttribute("memberDao");
     }
 
     @Override
-    public void service(ServletRequest servletRequest, ServletResponse servletResponse)
+    protected void service(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
-        //서블릿 컨테이너가 service()를 호출할 때 넘겨주는 값을
-        // HttpServletRequest와 HttpServletResponse 이다.
-        // 파라미터로 넘어 온 객체를 제대로 사용하고 싶다면 원래 타입으로 형변환 하라!
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        servletResponse.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
         out.println("<!DOCTYPE html>");
@@ -54,8 +43,6 @@ public class LoginServlet extends GenericServlet {
         try {
             Member member = memberDao.findByEmailAndPassword(email, password);
             if (member != null) {
-//      prompt.setLoginUser(member);
-//      prompt.setAttribute("loginUser", member);
                 request.getSession().setAttribute("loginUser", member);
                 out.printf("<p>%s 님 환영합니다.</p>\n", member.getName());
             } else {
@@ -71,6 +58,4 @@ public class LoginServlet extends GenericServlet {
         out.println("</body>");
         out.println("</html>");
     }
-
-
 }

@@ -5,14 +5,14 @@ import java.util.List;
 
 public interface BoardDao {
 
-  void add(Board board);
+    void add(Board board);
 
-  int delete(int no);
+    int delete(int no);
 
-  List<Board> findAll();
+    List<Board> findAll(int category);
 
-  Board findBy(int no);
+    Board findBy(int no);
 
-  int update(Board board);
+    int update(Board board);
 
 }
