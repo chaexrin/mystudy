@@ -21,38 +21,39 @@ public class MemberListServlet extends HttpServlet {
         this.memberDao = (MemberDao) this.getServletContext().getAttribute("memberDao");
     }
 
-
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
-        out.println("<!DOCTYPE html>");
-        out.println("<html lang='en'>");
-        out.println("<head>");
-        out.println("  <meta charset='UTF-8'>");
-        out.println("  <title>비트캠프 데브옵스 5기</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h1>회원</h1>");
-
-        out.println("<a href='/member/form.html'>새 회원</a>");
-
         try {
+            List<Member> list = memberDao.findAll();
+
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+
+            out.println("<!DOCTYPE html>");
+            out.println("<html lang='en'>");
+            out.println("<head>");
+            out.println("  <meta charset='UTF-8'>");
+            out.println("  <title>비트캠프 데브옵스 5기</title>");
+            out.println("</head>");
+            out.println("<body>");
+
+            request.getRequestDispatcher("/header").include(request, response);
+
+            out.println("<h1>회원</h1>");
+            out.println("<a href='/member/add'>새 회원</a>");
             out.println("<table border='1'>");
             out.println("    <thead>");
             out.println("    <tr> <th>번호</th> <th>이름</th> <th>이메일</th> <th>가입일</th> </tr>");
             out.println("    </thead>");
             out.println("    <tbody>");
-
-            List<Member> list = memberDao.findAll();
-
             for (Member member : list) {
                 out.printf(
-                    "<tr> <td>%d</td> <td><a href='/member/view?no=%1$d'>%s</a></td> <td>%s</td> <td>%s</td> </tr>\n",
+                    "<tr> <td>%d</td> <td><img src='%s' height='20px'> <a href='/member/view?no=%1$d'>%s</a></td> <td>%s</td> <td>%s</td> </tr>\n",
                     member.getNo(),
+                    member.getPhoto() != null ? "/upload/" + member.getPhoto()
+                        : "/img/default-photo.png",
                     member.getName(),
                     member.getEmail(),
                     member.getCreatedDate());
@@ -60,14 +61,15 @@ public class MemberListServlet extends HttpServlet {
             out.println("    </tbody>");
             out.println("</table>");
 
-        } catch (Exception e) {
-            out.println("<p>목록 오류!</p>");
-            out.println("<pre>");
-            e.printStackTrace(out);
-            out.println("</pre>");
-        }
+            request.getRequestDispatcher("/footer").include(request, response);
 
-        out.println("</body>");
-        out.println("</html>");
+            out.println("</body>");
+            out.println("</html>");
+
+        } catch (Exception e) {
+            request.setAttribute("message", "목록 오류!");
+            request.setAttribute("exception", e);
+            request.getRequestDispatcher("/error").forward(request, response);
+        }
     }
 }

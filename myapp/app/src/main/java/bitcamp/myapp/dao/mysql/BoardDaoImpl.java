@@ -14,7 +14,6 @@ import java.util.List;
 public class BoardDaoImpl implements BoardDao {
 
     DBConnectionPool connectionPool;
-    int category;
 
     public BoardDaoImpl(DBConnectionPool connectionPool) {
         this.connectionPool = connectionPool;

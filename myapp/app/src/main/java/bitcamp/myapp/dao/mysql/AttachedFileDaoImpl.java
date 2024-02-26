@@ -114,17 +114,13 @@ public class AttachedFileDaoImpl implements AttachedFileDao {
             PreparedStatement pstmt = con.prepareStatement(
                 "select file_no, file_path, board_no"
                     + " from board_files where file_no=?")) {
-
             pstmt.setInt(1, no);
-
             try (ResultSet rs = pstmt.executeQuery()) {
-
                 if (rs.next()) {
                     AttachedFile file = new AttachedFile();
                     file.setNo(rs.getInt("file_no"));
                     file.setFilePath(rs.getString("file_path"));
                     file.setBoardNo(rs.getInt("board_no"));
-
                     return file;
                 }
                 return null;
