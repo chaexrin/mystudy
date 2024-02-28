@@ -26,10 +26,9 @@ public class AssignmentUpdateServlet extends HttpServlet {
 
         try {
             int no = Integer.parseInt(request.getParameter("no"));
-
             Assignment old = assignmentDao.findBy(no);
             if (old == null) {
-                throw new Exception("<p>과제 번호가 유효하지 않습니다.</p>");
+                throw new Exception("과제 번호가 유효하지 않습니다.");
             }
 
             Assignment assignment = new Assignment();
@@ -44,7 +43,7 @@ public class AssignmentUpdateServlet extends HttpServlet {
         } catch (Exception e) {
             request.setAttribute("message", "변경 오류!");
             request.setAttribute("exception", e);
-            request.getRequestDispatcher("/error").forward(request, response);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

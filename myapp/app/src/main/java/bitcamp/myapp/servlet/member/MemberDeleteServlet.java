@@ -22,11 +22,9 @@ public class MemberDeleteServlet extends HttpServlet {
         uploadDir = this.getServletContext().getRealPath("/upload");
     }
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
         try {
             int no = Integer.parseInt(request.getParameter("no"));
             Member member = memberDao.findBy(no);
@@ -44,8 +42,7 @@ public class MemberDeleteServlet extends HttpServlet {
         } catch (Exception e) {
             request.setAttribute("message", "삭제 오류!");
             request.setAttribute("exception", e);
-            request.getRequestDispatcher("/error").forward(request, response);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
-
     }
 }

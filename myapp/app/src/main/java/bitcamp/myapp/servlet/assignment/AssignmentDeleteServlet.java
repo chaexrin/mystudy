@@ -25,15 +25,15 @@ public class AssignmentDeleteServlet extends HttpServlet {
         try {
             int no = Integer.parseInt(request.getParameter("no"));
             if (assignmentDao.delete(no) == 0) {
-                throw new Exception("<p>과제 번호가 유효하지 않습니다.</p>");
+                throw new Exception("과제 번호가 유효하지 않습니다.");
             }
 
-            response.sendRedirect("list");
+            response.sendRedirect("/assignment/list");
 
         } catch (Exception e) {
             request.setAttribute("message", "과제 삭제 오류!");
             request.setAttribute("exception", e);
-            request.getRequestDispatcher("/error").forward(request, response);
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 
