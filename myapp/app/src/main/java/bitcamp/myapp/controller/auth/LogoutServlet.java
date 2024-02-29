@@ -1,4 +1,4 @@
-package bitcamp.myapp.servlet.auth;
+package bitcamp.myapp.controller.auth;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -17,6 +17,7 @@ public class LogoutServlet extends HttpServlet {
 
         request.getSession().invalidate();
 
-        response.sendRedirect("/index.html");
+        request.setAttribute("viewUrl", "redirect:/index.html");
+
     }
 }

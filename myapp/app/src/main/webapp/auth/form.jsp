@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
-
 <!DOCTYPE html>
 <html lang='en'>
   <head>
@@ -12,17 +11,19 @@
 
 <h1>로그인</h1>
 
-        <form action='/auth/login' method='post'>
-        <div>
-        이메일: <input name='email' type='text'
-        value='<%=request.getAttribute("email") != null ? request.getAttribute("email") : ""%>'>
-        </div>
-        <div>
-              암호: <input name='password' type='password'>
-        </div>
-        <input type='checkbox' name='saveEmail'> 이메일 저장
-        <button>로그인</button>
-        </form>
+<form action='/app/auth/login' method='post'>
+<div>
+    이메일: <input name='email' type='text'
+    value='${email}'>
+</div>
+<div>
+    암호: <input name='password' type='password'>
+</div>
+<input type='checkbox' name='saveEmail'> 이메일 저장
+
+<button>로그인</button>
+
+</form>
 
 <jsp:include page="/footer.jsp"></jsp:include>
 
