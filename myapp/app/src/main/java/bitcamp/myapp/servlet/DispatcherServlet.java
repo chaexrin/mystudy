@@ -7,6 +7,8 @@ import bitcamp.myapp.controller.assignment.AssignmentDeleteController;
 import bitcamp.myapp.controller.assignment.AssignmentListController;
 import bitcamp.myapp.controller.assignment.AssignmentUpdateController;
 import bitcamp.myapp.controller.assignment.AssignmentViewController;
+import bitcamp.myapp.controller.auth.LoginController;
+import bitcamp.myapp.controller.auth.LogoutController;
 import bitcamp.myapp.controller.board.BoardAddController;
 import bitcamp.myapp.controller.board.BoardDeleteController;
 import bitcamp.myapp.controller.board.BoardFileDeleteController;
@@ -67,6 +69,9 @@ public class DispatcherServlet extends HttpServlet {
         controllerMap.put("/assignment/update", new AssignmentUpdateController(assignmentDao));
         controllerMap.put("/assignment/delete", new AssignmentDeleteController(assignmentDao));
 
+        controllerMap.put("/auth/login", new LoginController(memberDao));
+        controllerMap.put("/auth/logout", new LogoutController());
+
         String boardUploadDir = this.getServletContext().getRealPath("/upload/board");
         controllerMap.put("/board/list", new BoardListController(boardDao));
         controllerMap.put("/board/view", new BoardViewController(boardDao, attachedFileDao));
@@ -84,11 +89,12 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-        // URL에서 요청한 페이지 컨트롤러를 실행.
+        // URL에서 요청한 페이지 컨트롤러를 실행한다.
         Object controller = controllerMap.get(request.getPathInfo());
         if (controller == null) {
             throw new ServletException(request.getPathInfo() + " 요청 페이지를 찾을 수 없습니다.");
         }
+
         try {
             Method requestHandler = findRequestHandler(controller);
             if (requestHandler == null) {
@@ -97,7 +103,7 @@ public class DispatcherServlet extends HttpServlet {
 
             String viewUrl = (String) requestHandler.invoke(controller, request, response);
 
-            // 페이지 컨트롤러가 알려준 JSP로 포워딩
+            // 페이지 컨트롤러가 알려준 JSP로 포워딩 한다.
             if (viewUrl.startsWith("redirect:")) {
                 response.sendRedirect(viewUrl.substring(9));
             } else {
@@ -105,10 +111,9 @@ public class DispatcherServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
-            // 페이지 컨트롤러에서 오류가 발생했으면 오류페이지로 포워딩한다
-            request.setAttribute("message", request.getPathInfo() + "실행 오류!");
+            // 페이지 컨트롤러에서 오류가 발생했으면 오류페이지로 포워딩한다.
+            request.setAttribute("message", request.getPathInfo() + " 실행 오류!");
 
-            // printwriter stringwriter 연결하면 스트링에 출력웅앵.은 프린트웅앵에 어쩌구 저쩌구..
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);
             e.printStackTrace(printWriter);
@@ -128,6 +133,5 @@ public class DispatcherServlet extends HttpServlet {
         }
         return null;
     }
-
 
 }
