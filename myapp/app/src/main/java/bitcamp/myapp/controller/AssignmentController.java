@@ -22,16 +22,7 @@ public class AssignmentController {
     }
 
     @RequestMapping("/assignment/add")
-    public String add(@RequestParam("title") String title,
-        @RequestParam("content") String content,
-        @RequestParam("deadline") Date deadline)
-        throws Exception {
-
-        Assignment assignment = new Assignment();
-        assignment.setTitle(title);
-        assignment.setContent(content);
-        assignment.setDeadline(deadline);
-
+    public String add(Assignment assignment) throws Exception {
         assignmentDao.add(assignment);
         return "redirect:list";
     }
@@ -83,7 +74,7 @@ public class AssignmentController {
     @RequestMapping("/assignment/delete")
     public String delete(@RequestParam("no") int no)
         throws Exception {
-        
+
         if (assignmentDao.delete(no) == 0) {
             throw new Exception("과제 번호가 유효하지 않습니다.");
         }
