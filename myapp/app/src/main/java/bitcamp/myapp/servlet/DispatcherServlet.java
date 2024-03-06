@@ -48,6 +48,10 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        System.setProperty("board.upload.dir",
+            this.getServletContext().getRealPath("/upload/board"));
+        System.setProperty("member.upload.dir", this.getServletContext().getRealPath("/upload"));
+
         ServletContext ctx = this.getServletContext();
         TransactionManager txManager = (TransactionManager) ctx.getAttribute("txManager");
         BoardDao boardDao = (BoardDao) ctx.getAttribute("boardDao");
@@ -59,11 +63,8 @@ public class DispatcherServlet extends HttpServlet {
         controllers.add(new AssignmentController(assignmentDao));
         controllers.add(new AuthController(memberDao));
 
-        String boardUploadDir = this.getServletContext().getRealPath("/upload/board");
-        controllers.add(new BoardController(txManager, boardDao, attachedFileDao, boardUploadDir));
-
-        String memberUploadDir = this.getServletContext().getRealPath("/upload");
-        controllers.add(new MemberController(memberDao, memberUploadDir));
+        controllers.add(new BoardController(txManager, boardDao, attachedFileDao));
+        controllers.add(new MemberController(memberDao));
 
         prepareRequestHandlers(controllers);
     }
