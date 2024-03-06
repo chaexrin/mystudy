@@ -21,7 +21,7 @@
     <c:if test="${empty member.photo}">
     <a href='/img/default-photo.png'> <img src='/img/default-photo.png' height='80px'></a><br>
      </c:if>
-      <input name='photo' type='file'>
+      <input name='file' type='file'>
 </div>
 
 <div>
@@ -37,7 +37,7 @@
   암호: <input name='password' type='password'>
 </div>
 <div>
-  가입일: <input readonly type='text' value='${requestScope.member.createdDate}>'>
+  가입일: <input readonly type='text' value='${requestScope.member.createdDate}'>
 </div>
 <div>
   <button>변경</button>
