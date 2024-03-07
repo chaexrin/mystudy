@@ -1,10 +1,9 @@
 package bitcamp.myapp.servlet;
 
+import bitcamp.context.ApplicationContext;
 import bitcamp.myapp.controller.CookieValue;
 import bitcamp.myapp.controller.RequestMapping;
 import bitcamp.myapp.controller.RequestParam;
-import bitcamp.util.Component;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -35,8 +34,8 @@ import javax.servlet.http.Part;
 public class DispatcherServlet extends HttpServlet {
 
     private Map<String, RequestHandler> requestHandlerMap = new HashMap<>();
-    private List<Object> controllers = new ArrayList<>();
-    private Map<String, Object> beanMap;
+    private ApplicationContext applicationContext;
+
 
     @Override
     public void init() throws ServletException {
@@ -46,17 +45,12 @@ public class DispatcherServlet extends HttpServlet {
                 this.getServletContext().getRealPath("/upload/board"));
             System.setProperty("member.upload.dir",
                 this.getServletContext().getRealPath("/upload"));
+            
+            applicationContext = new ApplicationContext(
+                (ApplicationContext) this.getServletContext().getAttribute("applicationContext"),
+                "bitcamp.myapp.controller");
 
-            beanMap = (Map<String, Object>) this.getServletContext().getAttribute("beanMap");
-//            controllers.add(new HomeController());
-//            controllers.add(new AssignmentController(assignmentDao));
-//            controllers.add(new AuthController(memberDao));
-//
-//            controllers.add(new BoardController(txManager, boardDao, attachedFileDao));
-//            controllers.add(new MemberController(memberDao));
-
-            preparePageControllers();
-            prepareRequestHandlers(controllers);
+            prepareRequestHandlers(applicationContext.getBeans());
 
         } catch (Exception e) {
             throw new ServletException(e);
@@ -111,60 +105,7 @@ public class DispatcherServlet extends HttpServlet {
     }
 
 
-    private void preparePageControllers() throws Exception {
-        File classPath = new File("./build/classes/java/main");
-//        System.out.println(classPath.getCanonicalPath());
-        findComponents(classPath, "");
-    }
-
-    private void findComponents(File dir, String packageName) throws Exception {
-        File[] files = dir.listFiles(
-            file -> file.isDirectory() || file.isFile() && !file.getName().contains("$")
-                && file.getName().endsWith(".class"));
-
-        if (packageName.length() > 0) {
-            packageName += ".";
-        }
-        for (File file : files) {
-            if (file.isFile()) {
-                Class<?> clazz = Class.forName(packageName + file.getName().replace(".class", ""));
-                Component comAnno = clazz.getAnnotation(Component.class);
-                if (comAnno != null) {
-                    // 생성자가 기본생성자가 아니라 기본생성자일 수도 있고 파라미터가 있는 생성자일 수도 있음..
-                    Constructor<?> constructor = clazz.getConstructors()[0];
-
-                    Parameter[] params = constructor.getParameters();
-                    Object[] args = getArguments(params);
-                    controllers.add(constructor.newInstance(args));
-                    System.out.println(clazz.getName() + "객체 생성");
-                }
-            } else {
-                findComponents(file, packageName + file.getName());
-            }
-        }
-    }
-
-    private Object[] getArguments(Parameter[] params) {
-        Object[] args = new Object[params.length];
-        for (int i = 0; i < params.length; i++) {
-            args[i] = findBean(params[i].getType());
-        }
-        return args;
-    }
-
-    private Object findBean(Class<?> type) {
-        Collection<Object> objs = beanMap.values();
-        for (Object obj : objs) {
-            if (type.isInstance(obj)) {
-//                System.out.printf("%s ==> %s\n", type.getName(), obj.getClass().getName());
-                return obj;
-            }
-        }
-        return null;
-    }
-
-
-    private void prepareRequestHandlers(List<Object> controllers) {
+    private void prepareRequestHandlers(Collection<Object> controllers) {
         for (Object controller : controllers) {
             Method[] methods = controller.getClass().getDeclaredMethods();
             for (Method m : methods) {
