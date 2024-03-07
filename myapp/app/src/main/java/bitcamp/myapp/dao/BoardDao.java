@@ -2,7 +2,9 @@ package bitcamp.myapp.dao;
 
 import bitcamp.myapp.vo.Board;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface BoardDao {
 
     void add(Board board);
