@@ -2,9 +2,8 @@ package bitcamp.myapp.dao;
 
 import bitcamp.myapp.vo.Member;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public interface MemberDao {
 
     public void add(Member member);

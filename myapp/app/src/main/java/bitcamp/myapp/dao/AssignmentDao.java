@@ -2,9 +2,8 @@ package bitcamp.myapp.dao;
 
 import bitcamp.myapp.vo.Assignment;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public interface AssignmentDao {
 
     void add(Assignment assignment);

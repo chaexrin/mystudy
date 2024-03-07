@@ -2,9 +2,8 @@ package bitcamp.myapp.dao;
 
 import bitcamp.myapp.vo.AttachedFile;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public interface AttachedFileDao {
 
     void add(AttachedFile file);

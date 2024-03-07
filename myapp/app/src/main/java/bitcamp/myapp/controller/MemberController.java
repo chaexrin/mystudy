@@ -16,6 +16,7 @@ public class MemberController {
 
 
     public MemberController(MemberDao memberDao) {
+        System.out.println("HomeController() 호출됨!");
         this.memberDao = memberDao;
     }
 
