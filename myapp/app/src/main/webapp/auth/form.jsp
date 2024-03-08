@@ -19,10 +19,8 @@
 <div>
     암호: <input name='password' type='password'>
 </div>
-<input type='checkbox' name='saveEmail'> 이메일 저장
-
 <button>로그인</button>
-
+<input type='checkbox' name='saveEmail'> 이메일 저장
 </form>
 
 <jsp:include page="/footer.jsp"></jsp:include>
