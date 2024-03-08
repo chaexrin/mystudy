@@ -3,14 +3,17 @@ package bitcamp.myapp.controller;
 import bitcamp.myapp.dao.AssignmentDao;
 import bitcamp.myapp.vo.Assignment;
 import java.util.Map;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@Component
+@Controller
 public class AssignmentController {
 
     private AssignmentDao assignmentDao;
 
     public AssignmentController(AssignmentDao assignmentDao) {
+        System.out.println("AssignmentController() 호출됨!");
         this.assignmentDao = assignmentDao;
     }
 
@@ -21,28 +24,24 @@ public class AssignmentController {
 
     @RequestMapping("/assignment/add")
     public String add(Assignment assignment) throws Exception {
+        System.out.println(assignment);
         assignmentDao.add(assignment);
         return "redirect:list";
     }
 
     @RequestMapping("/assignment/list")
-    public String list(Map<String, Object> map)
-        throws Exception {
+    public String list(Map<String, Object> map) throws Exception {
         map.put("list", assignmentDao.findAll());
         return "/assignment/list.jsp";
     }
 
     @RequestMapping("/assignment/view")
-    public String view(@RequestParam("no") int no, Map<String, Object> map)
-        throws Exception {
-
+    public String view(@RequestParam("no") int no, Map<String, Object> map) throws Exception {
         Assignment assignment = assignmentDao.findBy(no);
         if (assignment == null) {
             throw new Exception("과제 번호가 유효하지 않습니다.");
         }
-
         map.put("assignment", assignment);
-
         return "/assignment/view.jsp";
     }
 
@@ -63,6 +62,4 @@ public class AssignmentController {
         }
         return "redirect:list";
     }
-
-
 }
