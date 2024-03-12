@@ -16,6 +16,7 @@
          AutowiredAnnotationBeanPostProcessor
     -->
 
+<!--생성자에 파라미터가 있으면 그것도 자동으로 처리해줌  -->
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
      
