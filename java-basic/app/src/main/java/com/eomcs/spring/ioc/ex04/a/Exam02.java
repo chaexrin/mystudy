@@ -13,8 +13,11 @@ public class Exam02 {
     // 객체의 프로퍼티 값이 제대로 설정되었는지 확인한다.
 
     System.out.println(iocContainer.getBean("c1"));
+    System.out.println("----------------------------------------------------");
     System.out.println(iocContainer.getBean("c2"));
+    System.out.println("----------------------------------------------------");
     System.out.println(iocContainer.getBean("c3"));
+    System.out.println("----------------------------------------------------");
     System.out.println(iocContainer.getBean("c4"));
   }
 

@@ -10,6 +10,7 @@ public class Exam01 {
     ApplicationContext iocContainer = new ClassPathXmlApplicationContext(//
         "com/eomcs/spring/ioc/ex03/d/application-context.xml");
 
+
     // SpringUtils.printBeanNames(iocContainer);
   }
 
