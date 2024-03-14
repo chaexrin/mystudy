@@ -23,7 +23,7 @@
   -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/app-servlet.xml</param-value>
+    <param-value>/WEB-INF/config/application-context.xml</param-value>
   </context-param>
 
   <listener>
@@ -34,10 +34,7 @@
   <servlet>
     <servlet-name>app</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value></param-value>
-    </init-param>
+
 
     <!-- 서블릿을 요청하지 않아도 웹 애플리케이션을 시작시킬 때 자동 생성되어
          IoC 컨테이너를 준비할 수 있도록
@@ -48,6 +45,17 @@
     <servlet-name>app</servlet-name>
     <url-pattern>/app/*</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>admin</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>admin</servlet-name>
+    <url-pattern>/admin/*</url-pattern>
+  </servlet-mapping>
+
 
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
