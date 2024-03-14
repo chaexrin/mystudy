@@ -9,30 +9,23 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-public class AdminWebApplicationInitializer extends AbstractDispatcherServletInitializer {
+public class AdminWebApplicationInitializer extends
+    AbstractAnnotationConfigDispatcherServletInitializer {
 // AbstractDispatcherServletInitializer => DispatcherServlet 하나밖에 생성 못함.
     
     private static Log log = LogFactory.getLog(AdminWebApplicationInitializer.class);
-    AnnotationConfigWebApplicationContext rootContext;
 
     @Override
-    protected WebApplicationContext createRootApplicationContext() {
-        rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(RootConfig.class);
-        rootContext.refresh();
-        return rootContext;
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[]{RootConfig.class};
     }
 
-
     @Override
-    protected WebApplicationContext createServletApplicationContext() {
-        AnnotationConfigWebApplicationContext adminContext = new AnnotationConfigWebApplicationContext();
-        adminContext.setParent(rootContext);
-        adminContext.register(AdminConfig.class);
-        adminContext.refresh();
-        return adminContext;
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[]{AdminConfig.class};
     }
 
     @Override
@@ -44,6 +37,4 @@ public class AdminWebApplicationInitializer extends AbstractDispatcherServletIni
     protected String getServletName() {
         return "admin";
     }
-
-
 }

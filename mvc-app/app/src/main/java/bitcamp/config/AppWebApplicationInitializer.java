@@ -9,26 +9,23 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-public class AppWebApplicationInitializer extends AbstractDispatcherServletInitializer {
+public class AppWebApplicationInitializer extends
+    AbstractAnnotationConfigDispatcherServletInitializer {
 // AbstractDispatcherServletInitializer => DispatcherServlet 하나밖에 생성 못함.
 
     private static Log log = LogFactory.getLog(AppWebApplicationInitializer.class);
-    AnnotationConfigWebApplicationContext rootContext;
 
     @Override
-    protected WebApplicationContext createRootApplicationContext() {
+    protected Class<?>[] getRootConfigClasses() {
         return null;
     }
 
-
     @Override
-    protected WebApplicationContext createServletApplicationContext() {
-        AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
-        appContext.register(AppConfig.class);
-        appContext.refresh();
-        return appContext;
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[]{AppConfig.class};
     }
 
     @Override
@@ -40,5 +37,4 @@ public class AppWebApplicationInitializer extends AbstractDispatcherServletIniti
     protected String getServletName() {
         return "app";
     }
-
 }
