@@ -21,9 +21,14 @@
           초기화 파라미터값: 예) /WEB-INF/app-servlet.xml
        => 설정하고 싶지 않다면 init-value를 비워둬라.
   -->
+  
+  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+  </context-param>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/config/application-context.xml</param-value>
+    <param-value>bitcamp.config.RootConfig</param-value>
   </context-param>
 
   <listener>
@@ -34,6 +39,18 @@
   <servlet>
     <servlet-name>app</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- Java Config로 IoC 컨테이너를 지정할 때는
+     기본 IoC 컨테이너(XmlWebApplicationContext)를 교체해야 한다.
+     다음과 같이 초기화 파라미터를 통해 DispatcherServlet이 사용할
+     IoC 컨테이너 클래스와 Java Config 클래스를 설정한다.-->
+    <init-param>
+      <param-name>contextClass</param-name>
+      <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    </init-param>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>bitcamp.config.RootConfig</param-value>
+    </init-param>
 
 
     <!-- 서블릿을 요청하지 않아도 웹 애플리케이션을 시작시킬 때 자동 생성되어
@@ -49,6 +66,14 @@
   <servlet>
     <servlet-name>admin</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextClass</param-name>
+      <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+    </init-param>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>bitcamp.config.AdminConfig</param-value>
+    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
