@@ -3,6 +3,8 @@ package bitcamp.web.admin;
 import bitcamp.dao.BoardDao;
 import bitcamp.vo.Board;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 // 주로 다음 애노테이션으로 표시한다.
 @Controller
 public class BoardController {
+
+    private static Log log = LogFactory.getLog(BoardController.class);
+
+    public BoardController() {
+       log.debug("BoardController() 호출됨");
+    }
+
     @Autowired
     BoardDao boardDao; // 이 객체는 ContextLoaderListener에서 관리하는 객체이다.
 
