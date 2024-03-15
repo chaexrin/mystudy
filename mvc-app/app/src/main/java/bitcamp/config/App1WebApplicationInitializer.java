@@ -1,22 +1,17 @@
 package bitcamp.config;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import java.io.File;
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration.Dynamic;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-public class AppWebApplicationInitializer extends
+public class App1WebApplicationInitializer extends
     AbstractAnnotationConfigDispatcherServletInitializer {
 // AbstractDispatcherServletInitializer => DispatcherServlet 하나밖에 생성 못함.
-
-    private static Log log = LogFactory.getLog(AppWebApplicationInitializer.class);
+    
+    private static Log log = LogFactory.getLog(App1WebApplicationInitializer.class);
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -25,16 +20,26 @@ public class AppWebApplicationInitializer extends
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{AppConfig.class};
+        return new Class[]{App1Config.class};
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/app/*"};
+        return new String[]{"/app1/*"};
     }
 
     @Override
     protected String getServletName() {
-        return "app";
+        return "app1";
+    }
+
+    @Override
+    protected void customizeRegistration(Dynamic registration) {
+        registration.setMultipartConfig(new MultipartConfigElement(
+            new File("./temp").getAbsolutePath(),
+//            new File(System.getProperty("java.io.tmpdir")).getAbsolutePath(),
+            1024 * 1024 * 10,
+            1024 * 1024 * 100,
+            1024 * 1024 * 1));
     }
 }
