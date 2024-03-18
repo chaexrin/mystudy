@@ -29,8 +29,9 @@ public class Controller03_4 {
     //    이 메서드를 호출하라는 의미다.
     @PostMapping(consumes = "application/x-www-form-urlencoded")
     @ResponseBody
-    public String handler1(String name, int age) {
-        System.out.printf("%s: %d\n", name,age);
+    public String handler1(@RequestBody String s) {
+        System.out.print(s);
+//        System.out.printf("%s: %d\n", name,age);
         return "handler1";
     }
 
