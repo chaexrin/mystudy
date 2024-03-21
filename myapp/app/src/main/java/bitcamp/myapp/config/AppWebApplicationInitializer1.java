@@ -8,34 +8,27 @@ import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration.Dynamic;
-import org.springframework.web.context.AbstractContextLoaderInitializer;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-public class AppWebApplicationInitializer extends AbstractContextLoaderInitializer {
+// 참고용으로 백업함.
+public class AppWebApplicationInitializer1 /*implements WebApplicationInitializer*/ {
 
-    AnnotationConfigWebApplicationContext rootContext;
-
-    @Override
-    protected WebApplicationContext createRootApplicationContext() {
-        // IOC 컨테이너 준비
-        rootContext = new AnnotationConfigWebApplicationContext();
+    //    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+// IOC 컨테이너 준비
+        AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(RootConfig.class);
         rootContext.refresh();
-        return rootContext;
-    }
-
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        // 수퍼 클래스의 onStartup에서 ContextLoaderListener를 생성하기 때문에
-        // 기존의 기능을 그대로 수행하도록 수퍼 클래스의 메소드를 호출.
-        super.onStartup(servletContext);
+        rootContext.setServletContext(servletContext);
+// Ioc 컨테이너를 가지고 컨텍스트로드 리스너로 서블릿 등록
+        servletContext.addListener(new ContextLoaderListener(rootContext));
 
         AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
         appContext.register(AppConfig.class);
-        appContext.setParent(this.rootContext);
+        appContext.setParent(rootContext);
         appContext.setServletContext(servletContext);
         appContext.refresh();
 

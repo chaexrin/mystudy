@@ -11,6 +11,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 
 public class AppConfig {
 
+    // MultipartResolver 객체 IOC 컨테이너에 등록
     @Bean
     MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
