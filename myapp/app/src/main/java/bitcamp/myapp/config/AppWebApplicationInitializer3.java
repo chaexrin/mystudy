@@ -9,14 +9,14 @@ import javax.servlet.ServletRegistration.Dynamic;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-public class AppWebApplicationInitializer3 extends AbstractDispatcherServletInitializer {
+// 참고용 AbstractDispatcherServletInitializer
+public class AppWebApplicationInitializer3 /*extends AbstractDispatcherServletInitializer*/ {
 
     ServletContext servletContext;
     AnnotationConfigWebApplicationContext rootContext;
 
-    @Override
+    //    @Override
     protected WebApplicationContext createRootApplicationContext() {
         // IOC 컨테이너 준비
         rootContext = new AnnotationConfigWebApplicationContext();
@@ -26,7 +26,7 @@ public class AppWebApplicationInitializer3 extends AbstractDispatcherServletInit
     }
 
     // DISPATCHER SERVLET이 사용할 서블릿 컨테이너 준비..
-    @Override
+//    @Override
     protected WebApplicationContext createServletApplicationContext() {
         AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
         appContext.register(AppConfig.class);
@@ -36,12 +36,12 @@ public class AppWebApplicationInitializer3 extends AbstractDispatcherServletInit
         return appContext;
     }
 
-    @Override
+    //    @Override
     protected String[] getServletMappings() {
         return new String[]{"/app/*"};
     }
 
-    @Override
+    //    @Override
     protected void customizeRegistration(Dynamic registration) {
         registration.setMultipartConfig(new MultipartConfigElement(
             new File("./temp").getAbsolutePath(),
@@ -52,14 +52,14 @@ public class AppWebApplicationInitializer3 extends AbstractDispatcherServletInit
         ));
     }
 
-    @Override
+    //    @Override
     protected Filter[] getServletFilters() {
         return new Filter[]{new CharacterEncodingFilter("UTF-8")};
     }
 
-    @Override
+    //    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         this.servletContext = servletContext;
-        super.onStartup(servletContext);
+//        super.onStartup(servletContext);
     }
 }
