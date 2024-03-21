@@ -9,14 +9,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
 
+    private final Log log = LogFactory.getLog(this.getClass());
     DBConnectionPool connectionPool;
 
     public MemberDaoImpl(DBConnectionPool connectionPool) {
+        log.debug("MemberDaoImpl() 호출됨!");
         this.connectionPool = connectionPool;
     }
 
