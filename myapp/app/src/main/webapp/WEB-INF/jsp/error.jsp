@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<jsp:include page="/header.jsp"></jsp:include>
+<jsp:include page="header.jsp"></jsp:include>
 
 <h1>오류!</h1>
 
@@ -17,10 +17,12 @@
 </c:if>
 
 <c:if test="${not empty detail}">
-  <p>${detail}</p>
+  <pre>
+  ${detail}
+  </pre>
 </c:if>
 
-<jsp:include page="/footer.jsp"></jsp:include>
+<jsp:include page="footer.jsp"></jsp:include>
 
 </body>
 </html>

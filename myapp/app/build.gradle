@@ -19,6 +19,9 @@ dependencies {
     //JSTL ㄹㅏ이브러리
     implementation 'javax.servlet:jstl:1.2'
 
+    // Mybatis 라이브러리
+    implementation 'org.mybatis:mybatis:3.5.15'
+
     // log4j 2.x 라이브러리
     implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
 

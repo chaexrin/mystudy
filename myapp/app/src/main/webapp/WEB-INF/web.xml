@@ -7,15 +7,12 @@
   xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
 
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:config/application-context.xml</param-value>
-  </context-param>
+
   <description>
     애플리케이션 소개
   </description>
 
   <display-name>과제 관리 시스템</display-name>
-  
+
 
 </web-app>
