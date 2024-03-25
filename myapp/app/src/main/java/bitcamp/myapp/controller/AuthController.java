@@ -31,6 +31,7 @@ public class AuthController {
         model.addAttribute("email", email);
     }
 
+
     @PostMapping("login")
     public String login(
         String email,

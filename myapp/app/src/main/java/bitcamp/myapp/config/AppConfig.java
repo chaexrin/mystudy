@@ -9,24 +9,22 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-@ComponentScan(value = {
-    "bitcamp.myapp.controller"
-})
+@ComponentScan(value = {"bitcamp.myapp.controller"})
 public class AppConfig {
 
-  private final Log log = LogFactory.getLog(this.getClass());
+    private final Log log = LogFactory.getLog(this.getClass());
 
-  public AppConfig() {
-    log.debug("생성자 호출됨!");
-  }
+    public AppConfig() {
+        log.debug("생성자 호출됨!");
+    }
 
-  @Bean
-  public MultipartResolver multipartResolver() {
-    return new StandardServletMultipartResolver();
-  }
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
 
-  @Bean
-  public ViewResolver viewResolver() {
-    return new InternalResourceViewResolver("/WEB-INF/jsp/", ".jsp");
-  }
+    @Bean
+    public ViewResolver viewResolver() {
+        return new InternalResourceViewResolver("/WEB-INF/jsp/", ".jsp");
+    }
 }
