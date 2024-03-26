@@ -6,25 +6,26 @@ import bitcamp.myapp.service.BoardService;
 import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 @Service
 public class DefaultBoardService implements BoardService {
 
-    private BoardDao boardDao;
-    private AttachedFileDao attachedFileDao;
+    private static final Log log = LogFactory.getLog(DefaultBoardService.class);
+    private final BoardDao boardDao;
+    private final AttachedFileDao attachedFileDao;
 
-    public DefaultBoardService(BoardDao boardDao, AttachedFileDao attachedFileDao) {
-        this.boardDao = boardDao;
-        this.attachedFileDao = attachedFileDao;
-    }
 
     @Transactional
     @Override
     public void add(Board board) {
         boardDao.add(board);
-        if (board.getFiles() != null) {
+        if (board.getFiles() != null && board.getFiles().size() > 0) {
             for (AttachedFile attachedFile : board.getFiles()) {
                 attachedFile.setBoardNo(board.getNo());
             }
@@ -48,7 +49,7 @@ public class DefaultBoardService implements BoardService {
     public int update(Board board) {
         int count = boardDao.update(board);
 
-        if (board.getFiles() != null) {
+        if (board.getFiles() != null && board.getFiles().size() > 0) {
             for (AttachedFile attachedFile : board.getFiles()) {
                 attachedFile.setBoardNo(board.getNo());
             }

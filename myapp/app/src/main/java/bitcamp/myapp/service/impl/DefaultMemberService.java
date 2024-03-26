@@ -4,16 +4,17 @@ import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.service.MemberService;
 import bitcamp.myapp.vo.Member;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
+@RequiredArgsConstructor
 @Service
 public class DefaultMemberService implements MemberService {
 
-    private MemberDao memberDao;
-
-    public DefaultMemberService(MemberDao memberDao) {
-        this.memberDao = memberDao;
-    }
+    private static final Log log = LogFactory.getLog(DefaultMemberService.class);
+    private final MemberDao memberDao;
 
     @Override
     public void add(Member member) {
@@ -31,6 +32,11 @@ public class DefaultMemberService implements MemberService {
     }
 
     @Override
+    public Member get(String email, String password) {
+        return memberDao.findByEmailAndPassword(email, password);
+    }
+
+    @Override
     public int update(Member member) {
         return memberDao.update(member);
     }
@@ -39,4 +45,5 @@ public class DefaultMemberService implements MemberService {
     public int delete(int no) {
         return memberDao.delete(no);
     }
+
 }
