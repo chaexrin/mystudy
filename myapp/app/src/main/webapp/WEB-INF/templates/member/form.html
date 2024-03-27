@@ -8,18 +8,26 @@
 
 <div data-th-replace="header :: header">머리말</div>
 
-<h1>로그인</h1>
+<h1>과제 관리 시스템</h1>
 
-<form action="login" data-th-action="@{login}" method='post'>
+<h2>회원</h2>
+
+<form action="add" data-th-action="@{add}" enctype='multipart/form-data' method='post'>
   <div>
-    이메일: <input data-th-value='${email}' name='email' type='text'
-                value="hong@test.com">
+    이메일: <input name='email' type='text'>
+  </div>
+  <div>
+    이름: <input name='name' type='text'>
   </div>
   <div>
     암호: <input name='password' type='password'>
   </div>
-  <button>로그인</button>
-  <input name='saveEmail' type='checkbox'> 이메일 저장
+  <div>
+    사진: <input name='file' type='file'>
+  </div>
+  <div>
+    <button>등록</button>
+  </div>
 </form>
 
 <div data-th-replace="footer :: footer">꼬리말</div>
