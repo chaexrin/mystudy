@@ -20,7 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("bitcamp.myapp.dao")
 @ComponentScan(value = {"bitcamp.myapp.dao", "bitcamp.myapp.service"})
 @PropertySource({
-    "classpath:config/ncp-jdbc.properties"
+    "classpath:config/ncp.properties",
+    "classpath:config/ncp-secret.properties"
 })
 public class RootConfig {
 
