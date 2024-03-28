@@ -22,11 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class NcpStorageService implements StorageService, InitializingBean {
 
     private static Log log = LogFactory.getLog(NcpStorageService.class);
+
     final String endPoint;
     final String regionName;
-
     final String accessKey;
-
     final String secretKey;
     final AmazonS3 s3;
 
@@ -41,7 +40,6 @@ public class NcpStorageService implements StorageService, InitializingBean {
         this.accessKey = accessKey;
         this.secretKey = secretKey;
 
-        // S3 client
         this.s3 = AmazonS3ClientBuilder.standard()
             .withEndpointConfiguration(
                 new AwsClientBuilder.EndpointConfiguration(endPoint, regionName))
@@ -49,7 +47,6 @@ public class NcpStorageService implements StorageService, InitializingBean {
                 new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
             .build();
     }
-
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -62,7 +59,7 @@ public class NcpStorageService implements StorageService, InitializingBean {
     @Override
     public String upload(String bucketName, String path, MultipartFile multipartFile)
         throws Exception {
-        // upload local file
+
         try (InputStream fileIn = multipartFile.getInputStream()) {
 
             String filename = UUID.randomUUID().toString();
@@ -72,12 +69,17 @@ public class NcpStorageService implements StorageService, InitializingBean {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(multipartFile.getContentType());
 
+            log.info(String.format("%s(%s)",
+                multipartFile.getOriginalFilename(),
+                multipartFile.getContentType()));
+
             // 서버에 업로드 요청 정보 생성
             PutObjectRequest putObjectRequest = new PutObjectRequest(
                 bucketName,
                 objectName,
                 fileIn,
-                objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead);
+                objectMetadata
+            ).withCannedAcl(CannedAccessControlList.PublicRead);
 
             // 서버에 업로드 실행
             s3.putObject(putObjectRequest);
@@ -91,6 +93,7 @@ public class NcpStorageService implements StorageService, InitializingBean {
     @Override
     public void delete(String bucketName, String path, String objectName) throws Exception {
         s3.deleteObject(bucketName, path + objectName);
+
         log.debug(String.format("Object %s has been deleted.\n", objectName));
     }
 }
