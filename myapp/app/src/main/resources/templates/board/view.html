@@ -26,12 +26,11 @@
     작성자: <input data-th-value="*{writer.name}" readonly type='text' value="홍길동">
   </div>
 
-
   <div data-th-if="${category == 1}">
     첨부파일: <input multiple name='attachedFiles' type='file'>
     <ul data-th-if="*{files[0].filePath}">
       <li data-th-each="file : *{files}" data-th-object="${file}">
-        <a data-th-href="@{'https://b61ht6oc2685.edge.naverncp.com/lT4144tzaI/board/' + $*{filePath}}"
+        <a data-th-href="@{'https://kr.object.ncloudstorage.com/bitcamp-devops5-123/board/' + *{filePath}}"
            data-th-text="*{filePath}"
            href="file.html">a.gif</a>
         [<a data-th-href="@{file/delete(category=${category},no=*{no})}"

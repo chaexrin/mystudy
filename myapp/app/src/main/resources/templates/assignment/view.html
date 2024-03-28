@@ -10,7 +10,7 @@
 
 <h1>과제</h1>
 
-<form action='/app/assignment/update' data-th-object="${assignment}" method='post'>
+<form action="'update" data-th-action="@{update}" data-th-object="${assignment}" method='post'>
   <div>
     번호: <input data-th-value="*{no}" name='no' readonly type='text' value='100'>
   </div>
