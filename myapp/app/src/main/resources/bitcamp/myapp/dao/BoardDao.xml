@@ -37,8 +37,7 @@
     where board_no=#{value}
   </delete>
 
-
-  <select id="findAll" resultMap="BoardMap" >
+  <select id="findAll" resultMap="BoardMap">
     select
     b.board_no,
     b.title,
@@ -47,14 +46,14 @@
     m.member_no,
     m.name
     from
-      boards b left outer join board_files bf on b.board_no=bf.board_no
-      inner join members m on b.writer=m.member_no
+    boards b left outer join board_files bf on b.board_no=bf.board_no
+    inner join members m on b.writer=m.member_no
     where
-      b.category=#{category}
+    b.category=#{category}
     group by
-      board_no
+    board_no
     order by
-      board_no desc
+    board_no desc
     limit #{rowCount} offset #{offset}
   </select>
 

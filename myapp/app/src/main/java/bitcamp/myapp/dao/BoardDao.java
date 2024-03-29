@@ -21,6 +21,5 @@ public interface BoardDao {
 
     int update(Board board);
 
-
     int countAll(int category);
 }

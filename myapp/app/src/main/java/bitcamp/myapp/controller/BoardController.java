@@ -81,9 +81,11 @@ public class BoardController {
         if (pageSize < 3 || pageSize > 20) {
             pageSize = 3;
         }
+
         if (pageNo < 1) {
             pageNo = 1;
         }
+
         int numOfRecord = boardService.countAll(category);
         int numOfPage = numOfRecord / pageSize + ((numOfRecord % pageSize) > 0 ? 1 : 0);
 
@@ -97,7 +99,6 @@ public class BoardController {
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("numOfPage", numOfPage);
-        
     }
 
     @GetMapping("view")

@@ -7,8 +7,6 @@ import bitcamp.myapp.vo.AttachedFile;
 import bitcamp.myapp.vo.Board;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DefaultBoardService implements BoardService {
 
-    private static final Log log = LogFactory.getLog(DefaultBoardService.class);
     private final BoardDao boardDao;
     private final AttachedFileDao attachedFileDao;
-
 
     @Transactional
     @Override
@@ -33,13 +29,12 @@ public class DefaultBoardService implements BoardService {
         }
     }
 
-    // 일관성을 위해
-    // 컨트롤러는 dao를 직접 쓰지 않고 서비스객체를 이용해서 사용.
     @Override
     public List<Board> list(int category, int pageNo, int pageSize) {
         return boardDao.findAll(category, pageSize * (pageNo - 1), pageSize);
     }
 
+    @Override
     public Board get(int no) {
         return boardDao.findBy(no);
     }
@@ -48,7 +43,6 @@ public class DefaultBoardService implements BoardService {
     @Override
     public int update(Board board) {
         int count = boardDao.update(board);
-
         if (board.getFiles() != null && board.getFiles().size() > 0) {
             for (AttachedFile attachedFile : board.getFiles()) {
                 attachedFile.setBoardNo(board.getNo());
@@ -58,7 +52,7 @@ public class DefaultBoardService implements BoardService {
         return count;
     }
 
-    @Transactional // 첨부파일 지웠다가 게시글 지우는거 실패하면 첨부파일 지웠던거 취소해야하기 때문에
+    @Transactional
     @Override
     public int delete(int no) {
         attachedFileDao.deleteAll(no);
