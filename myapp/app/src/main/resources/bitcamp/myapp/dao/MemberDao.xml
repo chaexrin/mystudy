@@ -25,13 +25,16 @@
 
   <select id="findAll" resultMap="MemberMap">
     select
-      member_no,
-      email,
-      name,
-      photo,
-      created_date
+    member_no,
+    email,
+    name,
+    photo,
+    created_date
     from
-      members
+    members
+    order by
+    name
+    limit #{rowCount} offset #{offset}
   </select>
 
   <select id="findBy" resultMap="MemberMap" parameterType="int">

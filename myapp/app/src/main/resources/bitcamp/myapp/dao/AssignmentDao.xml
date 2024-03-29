@@ -23,12 +23,14 @@
 
   <select id="findAll" resultMap="AssignmentMap">
     select
-      assignment_no,
-      title,
-      deadline
+    assignment_no,
+    title,
+    deadline
     from
-      assignments
-    order by assignment_no desc
+    assignments
+    order by
+    assignment_no desc
+    limit #{rowCount} offset #{offset}
   </select>
 
   <select id="findBy" resultMap="AssignmentMap" parameterType="int">
