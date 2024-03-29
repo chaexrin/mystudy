@@ -71,4 +71,9 @@
       email=#{email}
       and password=sha2(#{password},256)
   </select>
+
+
+  <select id="countAll" resultType="int">
+  select count(*) from members;
+  </select>
 </mapper>
