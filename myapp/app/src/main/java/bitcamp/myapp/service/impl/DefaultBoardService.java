@@ -36,8 +36,8 @@ public class DefaultBoardService implements BoardService {
     // 일관성을 위해
     // 컨트롤러는 dao를 직접 쓰지 않고 서비스객체를 이용해서 사용.
     @Override
-    public List<Board> list(int category) {
-        return boardDao.findAll(category);
+    public List<Board> list(int category, int pageNo, int pageSize) {
+        return boardDao.findAll(category, pageSize * (pageNo - 1), pageSize);
     }
 
     public Board get(int no) {
@@ -78,5 +78,10 @@ public class DefaultBoardService implements BoardService {
     @Override
     public int deleteAttachedFile(int fileNo) {
         return attachedFileDao.delete(fileNo);
+    }
+
+    @Override
+    public int countAll(int category) {
+        return boardDao.countAll(category);
     }
 }
