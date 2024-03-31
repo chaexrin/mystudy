@@ -1,4 +1,5 @@
 -- my SQL 접속하기 
+ mysql -u root -p
 -- mysql -u 사용자명 -p 데이터베이스이름
 -- mysql -u root (계정과 비번을 만들지 않았을때)
 -- mysql -u root -p(루트 비번이 있을때)
