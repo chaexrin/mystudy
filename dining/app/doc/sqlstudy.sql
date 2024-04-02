@@ -248,3 +248,6 @@ WHERE EXISTS (
 -- EXISTS: subquery의 결과가 최소 하나의 row라도 있다면 TRUE를 반환
 
 -- NOT EXISTS: subquery의 결과가 단 하나의 row도 없다면 TRUE를 반환
+
+SELECT * 
+FROM employee E INNER JOIN DEPARTMENT D ON E.dept_id = D.id;
