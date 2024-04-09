@@ -18,22 +18,21 @@
     values(#{email},#{name},sha2(#{password},256),#{photo})
   </insert>
 
-<delete id="delete" parameterType="int">
-  delete from members where member_no=#{value}
-  <!--  delete from members where member_no=#{객체프로퍼티명} -->
-</delete>
+  <delete id="delete" parameterType="int">
+    delete from members where member_no=#{value}
+  </delete>
 
   <select id="findAll" resultMap="MemberMap">
     select
-    member_no,
-    email,
-    name,
-    photo,
-    created_date
+      member_no,
+      email,
+      name,
+      photo,
+      created_date
     from
-    members
+      members
     order by
-    name
+      name
     limit #{rowCount} offset #{offset}
   </select>
 
@@ -56,13 +55,13 @@
       name=#{name},
       photo=#{photo}
     <if test="password != ''">
-    , password=sha2(#{password},256)
-  </if>
+      , password=sha2(#{password},256)
+    </if>
     where
       member_no=#{no}
   </update>
 
-  <select id="findByEmailAndPassword" resultMap="MemberMap" parameterType="map">
+  <select id="findByEmailAndPassword" resultMap="MemberMap">
     select
       member_no,
       email,
@@ -71,12 +70,11 @@
     from
       members
     where
-      email=#{email}
+      email= #{email}
       and password=sha2(#{password},256)
   </select>
 
-
   <select id="countAll" resultType="int">
-  select count(*) from members;
+    select count(*) from members;
   </select>
 </mapper>

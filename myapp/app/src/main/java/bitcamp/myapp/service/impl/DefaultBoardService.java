@@ -14,68 +14,68 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DefaultBoardService implements BoardService {
 
-    private final BoardDao boardDao;
-    private final AttachedFileDao attachedFileDao;
+  private final BoardDao boardDao;
+  private final AttachedFileDao attachedFileDao;
 
-    @Transactional
-    @Override
-    public void add(Board board) {
-        boardDao.add(board);
-        if (board.getFileList() != null && board.getFileList().size() > 0) {
-            for (AttachedFile attachedFile : board.getFileList()) {
-                attachedFile.setBoardNo(board.getNo());
-            }
-            attachedFileDao.addAll(board.getFileList());
-        }
+  @Transactional
+  @Override
+  public void add(Board board) {
+    boardDao.add(board);
+    if (board.getFileList() != null && board.getFileList().size() > 0) {
+      for (AttachedFile attachedFile : board.getFileList()) {
+        attachedFile.setBoardNo(board.getNo());
+      }
+      attachedFileDao.addAll(board.getFileList());
     }
+  }
 
-    @Override
-    public List<Board> list(int category, int pageNo, int pageSize) {
-        return boardDao.findAll(category, pageSize * (pageNo - 1), pageSize);
-    }
+  @Override
+  public List<Board> list(int category, int pageNo, int pageSize) {
+    return boardDao.findAll(category, pageSize * (pageNo - 1), pageSize);
+  }
 
-    @Override
-    public Board get(int no) {
-        return boardDao.findBy(no);
-    }
+  @Override
+  public Board get(int no) {
+    return boardDao.findBy(no);
+  }
 
-    @Transactional
-    @Override
-    public int update(Board board) {
-        int count = boardDao.update(board);
-        if (board.getFileList() != null && board.getFileList().size() > 0) {
-            for (AttachedFile attachedFile : board.getFileList()) {
-                attachedFile.setBoardNo(board.getNo());
-            }
-            attachedFileDao.addAll(board.getFileList());
-        }
-        return count;
+  @Transactional
+  @Override
+  public int update(Board board) {
+    int count = boardDao.update(board);
+    if (board.getFileList() != null && board.getFileList().size() > 0) {
+      for (AttachedFile attachedFile : board.getFileList()) {
+        attachedFile.setBoardNo(board.getNo());
+      }
+      attachedFileDao.addAll(board.getFileList());
     }
+    return count;
+  }
 
-    @Transactional
-    @Override
-    public int delete(int no) {
-        attachedFileDao.deleteAll(no);
-        return boardDao.delete(no);
-    }
+  @Transactional
+  @Override
+  public int delete(int no) {
+    attachedFileDao.deleteAll(no);
+    return boardDao.delete(no);
+  }
 
-    @Override
-    public List<AttachedFile> getAttachedFiles(int no) {
-        return attachedFileDao.findAllByBoardNo(no);
-    }
+  @Override
+  public List<AttachedFile> getAttachedFiles(int no) {
+    return attachedFileDao.findAllByBoardNo(no);
+  }
 
-    @Override
-    public AttachedFile getAttachedFile(int fileNo) {
-        return attachedFileDao.findByNo(fileNo);
-    }
+  @Override
+  public AttachedFile getAttachedFile(int fileNo) {
+    return attachedFileDao.findByNo(fileNo);
+  }
 
-    @Override
-    public int deleteAttachedFile(int fileNo) {
-        return attachedFileDao.delete(fileNo);
-    }
+  @Override
+  public int deleteAttachedFile(int fileNo) {
+    return attachedFileDao.delete(fileNo);
+  }
 
-    @Override
-    public int countAll(int category) {
-        return boardDao.countAll(category);
-    }
+  @Override
+  public int countAll(int category) {
+    return boardDao.countAll(category);
+  }
 }

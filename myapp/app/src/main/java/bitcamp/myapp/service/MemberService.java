@@ -5,17 +5,17 @@ import java.util.List;
 
 public interface MemberService {
 
-    void add(Member member);
+  void add(Member member);
 
-    List<Member> list(int pageNo, int pageSize);
+  List<Member> list(int pageNo, int pageSize);
 
-    Member get(int no);
+  Member get(int no);
 
-    Member get(String email, String password);
+  Member get(String email, String password);
 
-    int update(Member member);
+  int update(Member member);
 
-    int delete(int no);
+  int delete(int no);
 
-    int countAll();
+  int countAll();
 }

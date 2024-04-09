@@ -11,35 +11,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultAssignmentService implements AssignmentService {
 
-    private final AssignmentDao assignmentDao;
+  private final AssignmentDao assignmentDao;
 
-    @Override
-    public void add(Assignment assignment) {
-        assignmentDao.add(assignment);
-    }
+  @Override
+  public void add(Assignment assignment) {
+    assignmentDao.add(assignment);
+  }
 
-    @Override
-    public List<Assignment> list(int pageNo, int pageSize) {
-        return assignmentDao.findAll(pageSize * (pageNo - 1), pageSize);
-    }
+  @Override
+  public List<Assignment> list(int pageNo, int pageSize) {
+    return assignmentDao.findAll(pageSize * (pageNo - 1), pageSize);
+  }
 
-    @Override
-    public Assignment get(int no) {
-        return assignmentDao.findBy(no);
-    }
+  @Override
+  public Assignment get(int no) {
+    return assignmentDao.findBy(no);
+  }
 
-    @Override
-    public int update(Assignment assignment) {
-        return assignmentDao.update(assignment);
-    }
+  @Override
+  public int update(Assignment assignment) {
+    return assignmentDao.update(assignment);
+  }
 
-    @Override
-    public int delete(int no) {
-        return assignmentDao.delete(no);
-    }
+  @Override
+  public int delete(int no) {
+    return assignmentDao.delete(no);
+  }
 
-    @Override
-    public int countAll() {
-        return assignmentDao.countAll();
-    }
+  @Override
+  public int countAll() {
+    return assignmentDao.countAll();
+  }
 }

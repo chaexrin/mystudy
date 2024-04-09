@@ -20,44 +20,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private static final Log log = LogFactory.getLog(AuthController.class);
-    private final MemberService memberService;
+  private static final Log log = LogFactory.getLog(AuthController.class);
+  private final MemberService memberService;
 
+  @GetMapping("form")
+  public void form(@CookieValue(required = false) String email, Model model) {
+    model.addAttribute("email", email);
+  }
 
-    @GetMapping("form")
-    public void form(@CookieValue(required = false) String email, Model model) {
-        model.addAttribute("email", email);
+  @PostMapping("login")
+  public String login(
+      String email,
+      String password,
+      String saveEmail,
+      HttpServletResponse response,
+      HttpSession session) throws Exception {
+
+    if (saveEmail != null) {
+      Cookie cookie = new Cookie("email", email);
+      cookie.setMaxAge(60 * 60 * 24 * 7);
+      response.addCookie(cookie);
+    } else {
+      Cookie cookie = new Cookie("email", "");
+      cookie.setMaxAge(0);
+      response.addCookie(cookie);
     }
 
-
-    @PostMapping("login")
-    public String login(
-        String email,
-        String password,
-        String saveEmail,
-        HttpServletResponse response,
-        HttpSession session) throws Exception {
-
-        if (saveEmail != null) {
-            Cookie cookie = new Cookie("email", email);
-            cookie.setMaxAge(60 * 60 * 24 * 7);
-            response.addCookie(cookie);
-        } else {
-            Cookie cookie = new Cookie("email", "");
-            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-        }
-
-        Member member = memberService.get(email, password);
-        if (member != null) {
-            session.setAttribute("loginUser", member);
-        }
-        return "auth/login";
+    Member member = memberService.get(email, password);
+    if (member != null) {
+      session.setAttribute("loginUser", member);
     }
 
-    @GetMapping("logout")
-    public String logout(HttpSession session) throws Exception {
-        session.invalidate();
-        return "redirect:/index.html";
-    }
+    return "auth/login";
+  }
+
+  @GetMapping("logout")
+  public String logout(HttpSession session) throws Exception {
+    session.invalidate();
+    return "redirect:/index.html";
+  }
 }

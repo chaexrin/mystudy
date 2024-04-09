@@ -6,21 +6,21 @@ import java.util.List;
 
 public interface BoardService {
 
-    void add(Board board);
+  void add(Board board);
 
-    List<Board> list(int category, int pageNo, int pageSize);
+  List<Board> list(int category, int pageNo, int pageSize);
 
-    Board get(int no);
+  Board get(int no);
 
-    int update(Board board);
+  int update(Board board);
 
-    int delete(int no);
+  int delete(int no);
 
-    List<AttachedFile> getAttachedFiles(int no);
+  List<AttachedFile> getAttachedFiles(int no);
 
-    AttachedFile getAttachedFile(int fileNo);
+  AttachedFile getAttachedFile(int fileNo);
 
-    int deleteAttachedFile(int fileNo);
+  int deleteAttachedFile(int fileNo);
 
-    int countAll(int category);
+  int countAll(int category);
 }

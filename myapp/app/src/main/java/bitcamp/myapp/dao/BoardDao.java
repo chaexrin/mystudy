@@ -8,18 +8,18 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface BoardDao {
 
-    void add(Board board);
+  void add(Board board);
 
-    int delete(int no);
+  int delete(int no);
 
-    List<Board> findAll(
-        @Param("category") int category,
-        @Param("offset") int offset,
-        @Param("rowCount") int rowCount);
+  List<Board> findAll(
+      @Param("category") int category,
+      @Param("offset") int offset,
+      @Param("rowCount") int rowCount);
 
-    Board findBy(int no);
+  Board findBy(int no);
 
-    int update(Board board);
+  int update(Board board);
 
-    int countAll(int category);
+  int countAll(int category);
 }
