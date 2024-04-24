@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Ex01Controller {
 
+
   @RequestMapping("/javascript/ex01/exam05_1")
   public Object exam05_1() throws Exception {
     Thread.sleep(10000); // 10초 동안 기다렸다가 작업을 재개한다.

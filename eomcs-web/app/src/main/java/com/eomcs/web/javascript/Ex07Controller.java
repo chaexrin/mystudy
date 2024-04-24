@@ -23,6 +23,7 @@ public class Ex07Controller {
     // view url을 지정하지 않으면 요청 URL을 view url로 사용한다.
   }
 
+
   @RequestMapping("/javascript/ex07/test2")
   public String test2(HttpServletResponse response) {
     // 모든 클라이언트에 대해

@@ -2,7 +2,8 @@
 const express = require('express');
 
 // HTTP 요청을 다루는 라이브러리 로딩하기
-const request = require('request');
+const axios = require('axios');
+
 
 const port = 3000; // 웹서버 포트 번호
 
@@ -101,12 +102,14 @@ app.get('/proxy', (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Content-Type', 'text/plain; charset=UTF-8');
 
-  request.get({
-      uri: req.query.url
-    }, (error, response, body) => {
-      res.send(body);
-  });
-}); 
+  axios.get(req.query.url)
+    .then(response => {
+      res.send(response.data);
+    })
+    .catch(error => {
+      res.status(500).send('Error: ' + error.message);
+    });
+});
 
 app.get('/proxy2', (req, res) => {    
 
@@ -123,12 +126,14 @@ app.get('/proxy2', (req, res) => {
     "&nx=" + req.query.nx +  // 지역 X 좌표
     "&ny=" + req.query.ny;  // 지역 Y 좌표
 
-    request.get({
-      uri: openApiUrl
-    }, (error, response, body) => {
-      res.send(body);
-  });
-}); 
+  axios.get(openApiUrl)
+    .then(response => {
+      res.send(response.data);
+    })
+    .catch(error => {
+      res.status(500).send('Error: ' + error.message);
+    });
+});
 
 app.post('/login', (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
