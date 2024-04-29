@@ -18,6 +18,7 @@
 "use strict"
 var tbody = document.querySelector("tbody");
 
+window.setTimeout(() => {
 var xhr = new XMLHttpRequest();
 xhr.onreadystatechange = () => {
     if (xhr.readyState == 4 && xhr.status == 200) {
@@ -34,7 +35,7 @@ xhr.onreadystatechange = () => {
 };
 xhr.open("GET", "http://localhost:3000/boards", true);
 xhr.send();
-
+}, 5000 );
 
 </script>
 </body>
